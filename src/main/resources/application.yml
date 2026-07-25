@@ -1,0 +1,16 @@
+spring:
+    application:
+        name: korkomat
+    datasource:
+        url: jdbc:postgresql://localhost:5433/korkomat_db
+        username: postgres
+        password: postgres
+        driver-class-name: org.postgresql.Driver
+    jpa:
+        hibernate:
+            ddl-auto: update # Hibernate sam stworzy/zaktualizuje tabele na podstawie encji w Kotlinie
+        show-sql: true # Wyświetla zapytania SQL w konsoli (przydatne do nauki!)
+        properties:
+            hibernate:
+                format_sql: true
+                dialect: org.hibernate.dialect.PostgreSQLDialect
