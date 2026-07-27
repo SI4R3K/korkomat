@@ -30,5 +30,7 @@ class User(
     @Column(name = "last_name", nullable = false)
     var lastName: String
 ) {
-
+    fun getPass(): String {
+        return password
+    }
 }

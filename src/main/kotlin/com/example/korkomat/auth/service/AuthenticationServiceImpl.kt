@@ -1,11 +1,14 @@
 package com.example.korkomat.auth.service
 
+import com.example.korkomat.auth.dto.request.LoginRequest
 import com.example.korkomat.auth.dto.request.RegisterRequest
+import com.example.korkomat.auth.dto.response.LoginResponse
 import com.example.korkomat.auth.exceptions.UserAlreadyExistsException
 import com.example.korkomat.common.constant.Constant
 import com.example.korkomat.user.domain.User
 import com.example.korkomat.user.repository.UserRepository
 import jakarta.transaction.Transactional
+import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 
 @Service
@@ -28,5 +31,23 @@ class AuthenticationServiceImpl(
         )
         userRepository.save(user)
         return "Zarejestrowano użytkownika o ID: ${user.id}"
+    }
+
+    @Transactional
+    override fun loginUser(request: LoginRequest): LoginResponse {
+        if (
+            !userRepository.existsByEmail(
+                requireNotNull(request.email) {"Email must not be null"})
+        ) {
+            throw UsernameNotFoundException(String.format(Constant.USER_NOT_FOUND, request.email))
+        }
+        val user = userRepository.findPasswordByEmail(request.email)
+        val authentication = request.password == user?.getPass()
+
+        if(!authentication) {
+            throw UserAlreadyExistsException(Constant.AUTHENTICATION_FAILED)
+        }
+
+        return LoginResponse("Udalo sie ;)")
     }
 }
