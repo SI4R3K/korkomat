@@ -7,6 +7,7 @@ import com.example.korkomat.auth.service.AuthenticationService
 import com.example.korkomat.common.dto.response.Api
 import org.springframework.http.ResponseEntity
 import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -28,5 +29,10 @@ class AuthController(
     @PostMapping("register")
     fun register(@RequestBody request: RegisterRequest): String {
         return authService.registerUser(request)
+    }
+
+    @GetMapping("test")
+    fun testGet(): String {
+        return "test"
     }
 }
