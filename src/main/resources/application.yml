@@ -1,6 +1,13 @@
 spring:
     application:
         name: korkomat
+    security:
+        jwt:
+            secret-key: 916rXznLgpdWRQBpaHbo8tvgkKN8fzwlpdSOvOu9uYc
+            expiration: 86400000 # 1 hour
+            refresh-token:
+                expiration: 1209600000  # 14 days
+
     datasource:
         url: jdbc:postgresql://localhost:5433/korkomat_db
         username: postgres

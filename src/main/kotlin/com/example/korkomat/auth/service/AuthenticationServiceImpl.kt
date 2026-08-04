@@ -6,6 +6,7 @@ import com.example.korkomat.auth.dto.response.LoginResponse
 import com.example.korkomat.auth.exceptions.UnauthenticatedUserException
 import com.example.korkomat.auth.exceptions.UserAlreadyExistsException
 import com.example.korkomat.common.constant.Constant
+import com.example.korkomat.user.UserUtil
 import com.example.korkomat.user.domain.User
 import com.example.korkomat.user.repository.UserRepository
 import jakarta.transaction.Transactional
@@ -17,7 +18,8 @@ import org.springframework.stereotype.Service
 @Service
 class AuthenticationServiceImpl(
     private val userRepository: UserRepository,
-    private val authenticationManager: AuthenticationManager
+    private val authenticationManager: AuthenticationManager,
+    private val jwtService: JwtService
 ): AuthenticationService {
 
     @Transactional
@@ -58,14 +60,14 @@ class AuthenticationServiceImpl(
             throw UnauthenticatedUserException(Constant.AUTHENTICATION_FAILED)
         }
 
-//
-//        val user = userRepository.findPasswordByEmail(request.email)
-//        val authentications = request.password == user?.getPass()
-//
-//        if(!authentication) {
-//            throw UserAlreadyExistsException(Constant.AUTHENTICATION_FAILED)
-//        }
+        val principal = authentication.principal as org.springframework.security.core.userdetails.User
+        val user = userRepository.findByEmail(principal.username)
+            ?: throw UsernameNotFoundException(String.format(Constant.USER_NOT_FOUND, principal.username))
 
-        return LoginResponse("Udalo sie ;)")
+        val claims = mapOf("roles" to user.role)
+        val accessToken = jwtService.generateToken(claims, user)
+        val expiresIn = jwtService.expiresIn
+
+        return UserUtil.tokensToLoginResponse(expiresIn, accessToken)
     }
 }
