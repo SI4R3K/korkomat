@@ -1,7 +1,9 @@
 package com.example.korkomat.auth.service
 
+import com.example.korkomat.auth.repository.RefreshTokenRepository
 import com.example.korkomat.auth.authorization.Role
 import com.example.korkomat.auth.config.JwtProperties
+import com.example.korkomat.auth.entity.RefreshToken
 import com.example.korkomat.auth.exceptions.ExpiredJwtException
 import com.example.korkomat.common.constant.Constant
 import com.example.korkomat.user.domain.User
@@ -16,12 +18,16 @@ import org.springframework.transaction.annotation.Transactional
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
 import java.util.Date
+import java.util.UUID
 import java.util.function.Function
+import kotlin.time.Clock
+import kotlin.time.toKotlinDuration
 
 @Service
 class JwtServiceImpl(
     private val jwtProperties: JwtProperties,
-    private val customUserDetailService: CustomUserDetailService
+    private val customUserDetailService: CustomUserDetailService,
+    private val refreshTokenRepository: RefreshTokenRepository,
 ): JwtService {
 
     override val expiresIn by lazy {
@@ -43,6 +49,10 @@ class JwtServiceImpl(
         issuer: User
     ): String? {
         return buildToken(extraClaims, issuer, jwtProperties.expiration)
+    }
+
+    override fun generateRawRefreshToken(): String {
+        return UUID.randomUUID().toString()
     }
 
     override fun getClaimsFromToken(token: String?): Claims? {
@@ -137,5 +147,24 @@ class JwtServiceImpl(
         val userDetails = customUserDetailService.loadUserByUsername(username)
 
         return Pair(userDetails, token)
+    }
+
+    @Transactional
+    override fun saveRefreshToken(
+        rawToken: String,
+        user: User
+    ) {
+        val tokenHash = RefreshToken.encryptToken(rawToken)
+
+        refreshTokenRepository.save(
+            RefreshToken(
+                token = tokenHash,
+                expiresAt = Clock.System.now()
+                    .plus(jwtProperties.refreshToken.expiration
+                        .toKotlinDuration()),
+                isRevoked = false,
+                user = user
+            )
+        )
     }
 }

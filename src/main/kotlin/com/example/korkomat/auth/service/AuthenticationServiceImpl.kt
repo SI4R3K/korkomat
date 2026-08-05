@@ -68,7 +68,9 @@ class AuthenticationServiceImpl(
         val accessToken = jwtService.generateToken(claims, user)
         val expiresIn = jwtService.expiresIn
         val tokenType = jwtService.tokenType
+        val rawToken = jwtService.generateRawRefreshToken()
 
-        return UserUtil.tokensToLoginResponse(expiresIn, accessToken, tokenType)
+        jwtService.saveRefreshToken(rawToken, user)
+        return UserUtil.tokensToLoginResponse(expiresIn, accessToken, tokenType, rawToken)
     }
 }

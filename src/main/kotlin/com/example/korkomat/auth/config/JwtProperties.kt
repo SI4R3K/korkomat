@@ -1,8 +1,7 @@
 package com.example.korkomat.auth.config
 
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.context.properties.ConfigurationProperties
-import org.springframework.context.annotation.Configuration
+import java.time.Duration
 
 @ConfigurationProperties(prefix = "spring.security.jwt")
 data class JwtProperties(
@@ -12,5 +11,5 @@ data class JwtProperties(
 )
 
 data class RefreshToken(
-    var expiration: Long = 0,
+    var expiration: Duration = Duration.ZERO,
 )

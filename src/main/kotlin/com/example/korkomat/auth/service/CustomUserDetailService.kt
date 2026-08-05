@@ -1,5 +1,6 @@
 package com.example.korkomat.auth.service
 
+import com.example.korkomat.user.domain.User
 import com.example.korkomat.user.repository.UserRepository
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -19,5 +20,10 @@ class CustomUserDetailService(
             user.password,
             user.authorities
         )
+    }
+
+    fun loadUserByEmail(email: String): User {
+        return userRepository.findByEmail(email)
+            ?: throw UsernameNotFoundException("User not found with email: $email")
     }
 }

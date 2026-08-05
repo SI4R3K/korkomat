@@ -4,9 +4,9 @@ spring:
     security:
         jwt:
             secret-key: 916rXznLgpdWRQBpaHbo8tvgkKN8fzwlpdSOvOu9uYc
-            expiration: 86400000 # 1 hour
+            expiration: 900000 # 15 minutes
             refresh-token:
-                expiration: 1209600000  # 14 days
+                expiration: 14d  # 14 days
 
     datasource:
         url: jdbc:postgresql://localhost:5433/korkomat_db

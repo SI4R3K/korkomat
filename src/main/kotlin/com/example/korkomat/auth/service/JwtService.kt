@@ -1,6 +1,7 @@
 package com.example.korkomat.auth.service
 
 import com.example.korkomat.auth.authorization.Role
+import com.example.korkomat.auth.entity.RefreshToken
 import com.example.korkomat.user.domain.User
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.security.core.userdetails.UserDetails
@@ -16,6 +17,8 @@ interface JwtService {
         extraClaims: Map<String, Role?>,
         issuer: User
     ): String?
+
+    fun generateRawRefreshToken(): String
 
     fun getClaimsFromToken(token: String?): Claims?
 
@@ -34,7 +37,7 @@ interface JwtService {
 
     fun isTokenExpired(token: String?): Boolean
     fun isTokenValid(token: String?): Boolean
-
+    fun saveRefreshToken(rawToken: String, user: User)
 }
 
 

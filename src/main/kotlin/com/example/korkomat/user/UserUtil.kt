@@ -6,13 +6,15 @@ object UserUtil {
     fun tokensToLoginResponse(
         expiresIn: Long?,
         accessToken: String?,
-        tokenType: String?
+        tokenType: String?,
+        refreshToken: String?
 
     ): LoginResponse {
         return LoginResponse(
             accessToken ?: "No access token provided",
             expiresIn ?: 0,
-            tokenType ?: "No type provided"
+            tokenType ?: "No type provided",
+            refreshToken ?: "No refresh token provided"
         )
     }
 }
