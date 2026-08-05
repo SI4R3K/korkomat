@@ -67,7 +67,8 @@ class AuthenticationServiceImpl(
         val claims = mapOf("roles" to user.role)
         val accessToken = jwtService.generateToken(claims, user)
         val expiresIn = jwtService.expiresIn
+        val tokenType = jwtService.tokenType
 
-        return UserUtil.tokensToLoginResponse(expiresIn, accessToken)
+        return UserUtil.tokensToLoginResponse(expiresIn, accessToken, tokenType)
     }
 }

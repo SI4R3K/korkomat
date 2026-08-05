@@ -1,5 +1,6 @@
 package com.example.korkomat.auth.config
 
+import com.example.korkomat.auth.filter.JwtAuthenticationFilter
 import com.example.korkomat.auth.service.CustomUserDetailService
 import com.example.korkomat.user.repository.UserRepository
 import org.springframework.context.annotation.Bean
@@ -12,10 +13,12 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.invoke
+import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
@@ -23,8 +26,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity // pozwala na @PreAuthorize
-class SecurityConfig {
-
+class SecurityConfig(
+    private val jwtAuthenticationFilter: JwtAuthenticationFilter
+) {
     companion object {
         private val WHITE_LIST = arrayOf(
             "/auth/login",
@@ -48,6 +52,8 @@ class SecurityConfig {
                     .requestMatchers(*WHITE_LIST).permitAll()
                     .anyRequest().authenticated()
             }
+            .sessionManagement { request -> request.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
         return http.build()
     }
 
@@ -92,7 +98,4 @@ class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration)
         return source
     }
-
-
-
 }
