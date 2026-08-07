@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest
 import org.springframework.security.core.userdetails.UserDetails
 import io.jsonwebtoken.Claims
 import java.util.Date
+import java.util.Optional
 import java.util.function.Function
 
 interface JwtService {
@@ -18,8 +19,6 @@ interface JwtService {
         issuer: User
     ): String?
 
-    fun generateRawRefreshToken(): String
-
     fun getClaimsFromToken(token: String?): Claims?
 
     fun extractUserDetailFromRequest(
@@ -27,7 +26,9 @@ interface JwtService {
     ): Pair<UserDetails, String>
 
     fun extractJwtFromHeader(request: HttpServletRequest): String?
+
     fun extractUsername(token: String): String?
+
     fun extractExpiration(token: String?): Date?
 
     fun <T> extractClaim(
@@ -36,8 +37,8 @@ interface JwtService {
     ): T?
 
     fun isTokenExpired(token: String?): Boolean
+
     fun isTokenValid(token: String?): Boolean
-    fun saveRefreshToken(rawToken: String, user: User)
 }
 
 

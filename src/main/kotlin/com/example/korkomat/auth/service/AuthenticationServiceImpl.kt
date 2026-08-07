@@ -1,10 +1,17 @@
 package com.example.korkomat.auth.service
 
 import com.example.korkomat.auth.dto.request.LoginRequest
+import com.example.korkomat.auth.dto.request.LogoutRequest
 import com.example.korkomat.auth.dto.request.RegisterRequest
+import com.example.korkomat.auth.dto.request.TokenRefreshRequest
 import com.example.korkomat.auth.dto.response.LoginResponse
+import com.example.korkomat.auth.dto.response.LogoutResponse
+import com.example.korkomat.auth.dto.response.TokenRefreshResponse
+import com.example.korkomat.auth.exceptions.RefreshTokenNotFoundExcpetion
 import com.example.korkomat.auth.exceptions.UnauthenticatedUserException
 import com.example.korkomat.auth.exceptions.UserAlreadyExistsException
+import com.example.korkomat.auth.exceptions.RefreshTokenExpiredException
+import com.example.korkomat.auth.repository.RefreshTokenRepository
 import com.example.korkomat.common.constant.Constant
 import com.example.korkomat.user.UserUtil
 import com.example.korkomat.user.domain.User
@@ -19,7 +26,9 @@ import org.springframework.stereotype.Service
 class AuthenticationServiceImpl(
     private val userRepository: UserRepository,
     private val authenticationManager: AuthenticationManager,
-    private val jwtService: JwtService
+    private val jwtService: JwtService,
+    private val refreshTokenService: RefreshTokenService,
+    private val refreshTokenRepository: RefreshTokenRepository,
 ): AuthenticationService {
 
     @Transactional
@@ -68,9 +77,42 @@ class AuthenticationServiceImpl(
         val accessToken = jwtService.generateToken(claims, user)
         val expiresIn = jwtService.expiresIn
         val tokenType = jwtService.tokenType
-        val rawToken = jwtService.generateRawRefreshToken()
+        val rawToken = refreshTokenService.generateRawRefreshToken()
 
-        jwtService.saveRefreshToken(rawToken, user)
+        refreshTokenService.saveRefreshToken(rawToken, user)
         return UserUtil.tokensToLoginResponse(expiresIn, accessToken, tokenType, rawToken)
+    }
+
+    @Transactional(dontRollbackOn = [RefreshTokenExpiredException::class])
+    override fun refreshAccessToken(request: TokenRefreshRequest): TokenRefreshResponse {
+        val refreshToken = refreshTokenService.findByToken(request.refreshToken)
+
+        refreshTokenService.verifyExpiration(refreshToken)
+
+        val user = refreshToken.user
+        val claims = mapOf("roles" to user.role)
+        val accessToken = jwtService.generateToken(claims, user)
+        val expiresIn = jwtService.expiresIn
+        val tokenType = jwtService.tokenType
+
+        return UserUtil.tokensToTokenRefreshResponse(
+            accessToken,
+            expiresIn,
+            tokenType
+        )
+    }
+
+    @Transactional
+    override fun logout(request: LogoutRequest): LogoutResponse {
+
+        if (request.refreshToken.isNullOrBlank()) {
+            throw RefreshTokenNotFoundExcpetion(Constant.REFRESH_TOKEN_NOT_PROVIDED)
+        }
+
+        refreshTokenRepository.delete(
+            refreshTokenService.findByToken(request.refreshToken)
+        )
+
+        return LogoutResponse("Log out successful")
     }
 }

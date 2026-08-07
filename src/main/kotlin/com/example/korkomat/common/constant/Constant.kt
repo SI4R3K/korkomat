@@ -14,4 +14,8 @@ object Constant {
     const val JWT_EXPIRED = "The JWT token has expired."
     const val JWT_UNSUPPORTED = "The JWT token type is unsupported."
 
+    // Refresh Token Errors
+    const val REFRESH_TOKEN_NOT_FOUND = "Refresh token not found."
+    const val REFRESH_TOKEN_NOT_PROVIDED = "Refresh token was not provided."
+
 }

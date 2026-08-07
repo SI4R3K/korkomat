@@ -33,6 +33,7 @@ class JwtAuthenticationFilter(
             "/auth/register",
             "/auth/forgot-password",
             "/auth/reset-password",
+            "/auth/refreshtoken",
             "/auth/validate-token/**"
         )
     }
@@ -44,6 +45,13 @@ class JwtAuthenticationFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
+        val authHeader = request.getHeader("Authorization")
+
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            filterChain.doFilter(request, response)
+            return
+        }
+
         val requestURI = request.requestURI  // URI of the request f.e. /auth/login
 
         if (isExcluded(requestURI)) {
@@ -74,9 +82,6 @@ class JwtAuthenticationFilter(
             return
         } catch (e: UnsupportedJwtException) {
             servletErrorResponseManager(Constant.JWT_UNSUPPORTED, response)
-            return
-        } catch (e: IllegalArgumentException) {
-            servletErrorResponseManager(Constant.JWT_MALFORMED, response)
             return
         }
         filterChain.doFilter(request, response)

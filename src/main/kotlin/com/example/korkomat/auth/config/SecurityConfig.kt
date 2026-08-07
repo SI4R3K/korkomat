@@ -31,12 +31,14 @@ class SecurityConfig(
 ) {
     companion object {
         private val WHITE_LIST = arrayOf(
+            "/error",
             "/auth/login",
             "/auth/logout",
             "/auth/register",
             "/auth/forgot-password",
             "/auth/reset-password",
-            "/auth/validate-password/**"
+            "/auth/validate-password/**",
+            "/auth/refreshtoken",
         )
     }
 

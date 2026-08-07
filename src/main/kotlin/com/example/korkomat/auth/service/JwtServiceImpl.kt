@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
 import java.util.Date
+import java.util.Optional
 import java.util.UUID
 import java.util.function.Function
 import kotlin.time.Clock
@@ -49,10 +50,6 @@ class JwtServiceImpl(
         issuer: User
     ): String? {
         return buildToken(extraClaims, issuer, jwtProperties.expiration)
-    }
-
-    override fun generateRawRefreshToken(): String {
-        return UUID.randomUUID().toString()
     }
 
     override fun getClaimsFromToken(token: String?): Claims? {
@@ -149,22 +146,5 @@ class JwtServiceImpl(
         return Pair(userDetails, token)
     }
 
-    @Transactional
-    override fun saveRefreshToken(
-        rawToken: String,
-        user: User
-    ) {
-        val tokenHash = RefreshToken.encryptToken(rawToken)
 
-        refreshTokenRepository.save(
-            RefreshToken(
-                token = tokenHash,
-                expiresAt = Clock.System.now()
-                    .plus(jwtProperties.refreshToken.expiration
-                        .toKotlinDuration()),
-                isRevoked = false,
-                user = user
-            )
-        )
-    }
 }

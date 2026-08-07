@@ -1,5 +1,6 @@
 package com.example.korkomat.auth.handler
 
+import com.example.korkomat.auth.exceptions.RefreshTokenExpiredException
 import com.example.korkomat.auth.exceptions.UserAlreadyExistsException
 import com.example.korkomat.common.constant.Constant
 import com.example.korkomat.common.constant.ErrorStatus
@@ -20,5 +21,19 @@ class AuthExceptionHandler {
             errorStatus = ErrorStatus.CONFLICT
         )
         return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse)
+    }
+
+    @ExceptionHandler(RefreshTokenExpiredException::class)
+    fun handleRefreshTokenExpired(
+        ex: RefreshTokenExpiredException
+    ): ResponseEntity<Api<Nothing>> {
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+            .body(
+                Api.error(
+                    ex.message ?: "Refresh token expired",
+                    ErrorStatus.UNAUTHORIZED
+                )
+            )
     }
 }

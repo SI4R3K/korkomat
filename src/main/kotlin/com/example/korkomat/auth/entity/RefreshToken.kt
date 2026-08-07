@@ -10,7 +10,7 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import kotlin.time.Instant
+import java.time.Instant
 
 @Entity(name = "refresh_tokens")
 data class RefreshToken(
@@ -22,7 +22,7 @@ data class RefreshToken(
     @Column(nullable = false, unique = true)
     var token: String?,
 
-    @Column(name = "expires_at", nullable = false, updatable = false)
+    @Column(name = "expires_at", nullable = false)
     val expiresAt: Instant,
 
     @Column(name = "is_revoked", nullable = false)
@@ -31,7 +31,6 @@ data class RefreshToken(
     @ManyToOne(fetch = FetchType.LAZY) //, cascade = [CascadeType.REMOVE]) is it helpfull or not?
     @JoinColumn(name = "user_id", nullable = false)
     val user: User,
-
     ) {
     companion object {
         fun encryptToken(token: String): String? {
