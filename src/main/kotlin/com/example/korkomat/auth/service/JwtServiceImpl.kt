@@ -3,10 +3,9 @@ package com.example.korkomat.auth.service
 import com.example.korkomat.auth.repository.RefreshTokenRepository
 import com.example.korkomat.auth.authorization.Role
 import com.example.korkomat.auth.config.JwtProperties
-import com.example.korkomat.auth.entity.RefreshToken
 import com.example.korkomat.auth.exceptions.ExpiredJwtException
 import com.example.korkomat.common.constant.Constant
-import com.example.korkomat.user.domain.User
+import com.example.korkomat.user.entity.User
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.MalformedJwtException
@@ -18,11 +17,7 @@ import org.springframework.transaction.annotation.Transactional
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
 import java.util.Date
-import java.util.Optional
-import java.util.UUID
 import java.util.function.Function
-import kotlin.time.Clock
-import kotlin.time.toKotlinDuration
 
 @Service
 class JwtServiceImpl(

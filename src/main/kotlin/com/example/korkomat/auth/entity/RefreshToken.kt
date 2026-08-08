@@ -1,6 +1,6 @@
 package com.example.korkomat.auth.entity
 
-import com.example.korkomat.user.domain.User
+import com.example.korkomat.user.entity.User
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType

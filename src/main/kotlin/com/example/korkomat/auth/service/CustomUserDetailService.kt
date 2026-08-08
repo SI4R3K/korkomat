@@ -1,6 +1,6 @@
 package com.example.korkomat.auth.service
 
-import com.example.korkomat.user.domain.User
+import com.example.korkomat.user.entity.User
 import com.example.korkomat.user.repository.UserRepository
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService

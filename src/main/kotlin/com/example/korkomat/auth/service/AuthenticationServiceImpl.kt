@@ -14,7 +14,7 @@ import com.example.korkomat.auth.exceptions.RefreshTokenExpiredException
 import com.example.korkomat.auth.repository.RefreshTokenRepository
 import com.example.korkomat.common.constant.Constant
 import com.example.korkomat.user.UserUtil
-import com.example.korkomat.user.domain.User
+import com.example.korkomat.user.entity.User
 import com.example.korkomat.user.repository.UserRepository
 import jakarta.transaction.Transactional
 import org.springframework.security.authentication.AuthenticationManager
