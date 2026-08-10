@@ -34,7 +34,7 @@ The project is currently in the early development stage. The initial focus is on
 
 ## Domain Model
 
-![Korkomat domain model v.2.0](docs/DomainModel_080826_v02.png)
+![Korkomat domain model v.2.0](docs/DomainModel_260724_v01.png)
 
 ## Getting Started
 
