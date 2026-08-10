@@ -32,6 +32,10 @@ The project is currently in the early development stage. The initial focus is on
 * Student lesson registration
 * Basic lesson management
 
+## Domain Model
+
+![Korkomat domain model v.2.0](docs/DomainModel_080826_v02.png)
+
 ## Getting Started
 
 Clone the repository:
