@@ -33,5 +33,4 @@ class UserController(
         val successResponse = Api.ok(registerTutorResponse, "Tutor progile registered successfully!")
         return ResponseEntity.status(HttpStatus.CREATED).body(successResponse)
     }
-
 }
