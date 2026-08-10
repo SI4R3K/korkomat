@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
+import jakarta.persistence.OneToOne
 import jakarta.persistence.Table
 import java.math.BigDecimal
 import java.util.UUID
@@ -28,8 +29,10 @@ data class TutorProfile(
     val hourlyRate: BigDecimal,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tutor_subject_id", nullable = false)
-    val tutorSubject: TutorSubject,
+    @JoinColumn(name = "tutor_subject_id")
+    val tutorSubject: TutorSubject? = null,
 
-
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false, unique = true)
+    val user: User,
     )

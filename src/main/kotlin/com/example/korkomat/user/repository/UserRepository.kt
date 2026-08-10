@@ -9,4 +9,5 @@ interface UserRepository: JpaRepository<User, UUID> {
     fun findPasswordByEmail(email: String): User?
 
     fun existsByEmail(email: String): Boolean
+
 }

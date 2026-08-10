@@ -5,12 +5,11 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
-import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 
 @Entity
 @Table(name = "subjects")
-data class Subjects(
+data class Subject(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,6 +18,4 @@ data class Subjects(
     @Column(nullable = false, unique = true, length = 100)
     val name: String,
 
-    @OneToMany(mappedBy = "subject")
-    val tutorSubjects: MutableList<TutorSubject> = mutableListOf()
 )

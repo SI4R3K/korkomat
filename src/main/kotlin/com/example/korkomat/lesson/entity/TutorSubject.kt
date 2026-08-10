@@ -13,7 +13,6 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import jakarta.persistence.UniqueConstraint
-import javax.security.auth.Subject
 
 @Entity
 @Table(
@@ -40,7 +39,7 @@ data class TutorSubject(
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    val level: LessonLevel,
+    val level: SubjectLevel,
 
     @Column(length = 1000)
     val description: String? = null,

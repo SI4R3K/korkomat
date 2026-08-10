@@ -12,7 +12,7 @@ class CustomUserDetailService(
     private val userRepository: UserRepository
 ): UserDetailsService {
     override fun loadUserByUsername(mail: String): UserDetails {
-        val user = userRepository.findByEmail(mail!!)
+        val user = userRepository.findByEmail(mail)
             ?: throw UsernameNotFoundException("User not found with email: $mail")
 
         return org.springframework.security.core.userdetails.User(
