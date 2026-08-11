@@ -1,13 +1,11 @@
 package com.example.korkomat.auth.service
 
 import com.example.korkomat.auth.authorization.Role
-import com.example.korkomat.auth.entity.RefreshToken
-import com.example.korkomat.user.domain.User
+import com.example.korkomat.user.entity.User
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.security.core.userdetails.UserDetails
 import io.jsonwebtoken.Claims
 import java.util.Date
-import java.util.Optional
 import java.util.function.Function
 
 interface JwtService {

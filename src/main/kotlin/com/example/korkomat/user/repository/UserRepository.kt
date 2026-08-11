@@ -1,8 +1,7 @@
 package com.example.korkomat.user.repository
 
-import com.example.korkomat.user.domain.User
+import com.example.korkomat.user.entity.User
 import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.data.jpa.repository.Query
 import java.util.UUID
 
 interface UserRepository: JpaRepository<User, UUID> {
@@ -10,4 +9,5 @@ interface UserRepository: JpaRepository<User, UUID> {
     fun findPasswordByEmail(email: String): User?
 
     fun existsByEmail(email: String): Boolean
+
 }

@@ -50,7 +50,7 @@ class SecurityConfig(
             .httpBasic { }
             .authorizeHttpRequests { request ->
                 request
-                    .requestMatchers("/admin/**").hasRole("ADMIN")
+                    .requestMatchers("/admin/**").hasAuthority("ADMIN")
                     .requestMatchers(*WHITE_LIST).permitAll()
                     .anyRequest().authenticated()
             }

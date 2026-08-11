@@ -1,4 +1,4 @@
-package com.example.korkomat.user.domain
+package com.example.korkomat.user.entity
 
 import com.example.korkomat.auth.authorization.Role
 import jakarta.persistence.Column

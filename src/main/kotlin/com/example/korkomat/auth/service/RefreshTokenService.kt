@@ -1,7 +1,7 @@
 package com.example.korkomat.auth.service
 
 import com.example.korkomat.auth.entity.RefreshToken
-import com.example.korkomat.user.domain.User
+import com.example.korkomat.user.entity.User
 
 interface RefreshTokenService {
     fun generateRawRefreshToken(): String

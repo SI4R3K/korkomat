@@ -21,3 +21,12 @@ spring:
             hibernate:
                 format_sql: true
                 dialect: org.hibernate.dialect.PostgreSQLDialect
+
+app:
+    admin:
+        seed:
+            enabled: ${ADMIN_SEED_ENABLED:true}
+            email: ${ADMIN_EMAIL:admin@korkomat.pl}
+            password: ${ADMIN_PASSWORD:admin123}
+            first-name: ${ADMIN_FIRST_NAME:Admin}
+            last-name: ${ADMIN_LAST_NAME:Korkomat}
