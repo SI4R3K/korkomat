@@ -24,7 +24,6 @@ import jakarta.persistence.UniqueConstraint
     ]
 )
 data class TutorSubject(
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
