@@ -12,7 +12,7 @@ data class GetSubjectResponse(
 )
 
 data class SubjectResponse(
-    val id: Long,
+    val id: Long?,
     val name: String
 )
 

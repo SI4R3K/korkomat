@@ -23,6 +23,10 @@ object Constant {
     const val REFRESH_TOKEN_NOT_FOUND = "Refresh token not found."
     const val REFRESH_TOKEN_NOT_PROVIDED = "Refresh token was not provided."
 
+    // Subject Errors
+    const val SUBJECT_ALREADY_EXISTS = "Subject with this [%s] already exists."
+    const val SUBJECT_NOT_FOUND = "Subject with this [%s] does not exist."
+
     // General Errors
     const val ERROR_INTERNAL_SERVER = "An unexpected error occurred on the server."
     const val ERROR_BAD_REQUEST = "Invalid request or credentials."

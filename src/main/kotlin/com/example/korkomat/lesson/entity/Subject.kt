@@ -16,5 +16,5 @@ data class Subject(
     val id: Long? = null,
 
     @Column(nullable = false, unique = true, length = 100)
-    val name: String,
+    var name: String,
 )

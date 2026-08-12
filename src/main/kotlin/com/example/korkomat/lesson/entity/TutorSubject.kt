@@ -34,14 +34,14 @@ data class TutorSubject(
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "subject_id", nullable = false)
-    val subject: Subject,
+    var subject: Subject,
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    val level: SubjectLevel,
+    var level: SubjectLevel,
 
     @Column(length = 1000)
-    val description: String? = null,
+    var description: String? = null,
 
 //    TODO()
 //    @OneToMany(mappedBy = "tutorSubject")

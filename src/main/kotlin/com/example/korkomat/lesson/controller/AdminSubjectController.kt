@@ -8,6 +8,8 @@ import com.example.korkomat.lesson.dto.response.DeleteSubjectResponse
 import com.example.korkomat.lesson.dto.response.GetSubjectResponse
 import com.example.korkomat.lesson.dto.response.GetSubjectsResponse
 import com.example.korkomat.lesson.dto.response.UpdateSubjectResponse
+import com.example.korkomat.lesson.service.SubjectAdminService
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -20,34 +22,46 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/admin/subjects")
-class SubjectAdminController {
+class AdminSubjectController(
+    private val subjectAdminService: SubjectAdminService,
+) {
 
     @PostMapping
     fun createSubject(@RequestBody request: CreateSubjectRequest): ResponseEntity<Api<CreateSubjectResponse>> {
-        TODO()
+        val response = subjectAdminService.createSubject(request)
+        val successResponse = Api.ok(response, "Subject created successfully!")
+        return ResponseEntity.status(HttpStatus.OK).body(successResponse)
     }
 
     @GetMapping
     fun getSubjects(): ResponseEntity<Api<GetSubjectsResponse>> {
-        TODO()
+        val response = subjectAdminService.getSubjects()
+        val successResponse = Api.ok(response, "All subjects retrieved successfully!")
+        return ResponseEntity.status(HttpStatus.OK).body(successResponse)
     }
 
     @GetMapping("/{id}")
-    fun getSubject(@PathVariable id: Long): ResponseEntity<Api<GetSubjectResponse>> {
-        TODO()
+    fun getSubject(@PathVariable id: String): ResponseEntity<Api<GetSubjectResponse>> {
+        val response = subjectAdminService.getSubject(id)
+        val successResponse = Api.ok(response, "Subject retrieved successfully!")
+        return ResponseEntity.status(HttpStatus.OK).body(successResponse)
     }
 
     @PutMapping("/{id}")
     fun updateSubject(
-        @PathVariable id: Long,
+        @PathVariable id: String,
         @RequestBody request: UpdateSubjectRequest
     ): ResponseEntity<Api<UpdateSubjectResponse>> {
-        TODO()
+        val response = subjectAdminService.updateSubject(id, request)
+        val successResponse = Api.ok(response, "Subject updated successfully!")
+        return ResponseEntity.status(HttpStatus.OK).body(successResponse)
     }
 
     @DeleteMapping("/{id}")
-    fun deleteSubject(@PathVariable id: Long): ResponseEntity<Api<DeleteSubjectResponse>> {
-        TODO()
+    fun deleteSubject(@PathVariable id: String): ResponseEntity<Api<DeleteSubjectResponse>> {
+        val response = subjectAdminService.deleteSubject(id)
+        val successResponse = Api.ok(response, "Subject deleted successfully!")
+        return ResponseEntity.status(HttpStatus.OK).body(successResponse)
     }
 
 }
