@@ -1,6 +1,6 @@
 package com.example.korkomat.lesson.repository
 
-import com.example.korkomat.lesson.entity.SubjectLevel
+import com.example.korkomat.lesson.entity.enumeration.SubjectLevel
 import com.example.korkomat.lesson.entity.TutorSubject
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query

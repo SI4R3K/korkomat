@@ -1,6 +1,6 @@
 package com.example.korkomat.lesson.dto.response
 
-import com.example.korkomat.lesson.entity.SubjectLevel
+import com.example.korkomat.lesson.entity.enumeration.SubjectLevel
 import java.util.UUID
 
 data class TutorSubjectsResponse(

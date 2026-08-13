@@ -1,5 +1,6 @@
 package com.example.korkomat.lesson.entity
 
+import com.example.korkomat.lesson.entity.enumeration.SubjectLevel
 import com.example.korkomat.user.entity.TutorProfile
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -43,7 +44,4 @@ data class TutorSubject(
     @Column(length = 1000)
     var description: String? = null,
 
-//    TODO()
-//    @OneToMany(mappedBy = "tutorSubject")
-//    val lessons: MutableList<Lesson> = mutableListOf()
 )

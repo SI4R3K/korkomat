@@ -1,4 +1,4 @@
-package com.example.korkomat.lesson.entity
+package com.example.korkomat.lesson.entity.enumeration
 
 enum class SubjectLevel {
     PRIMARY_SCHOOL,
