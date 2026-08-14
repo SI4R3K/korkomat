@@ -1,26 +1,23 @@
-package com.example.korkomat.lesson.entity.enumeration
+package com.example.korkomat.lesson.entity
 
-import com.example.korkomat.auth.authorization.Role
-import com.example.korkomat.lesson.entity.AvailableSlot
+import com.example.korkomat.lesson.entity.enumeration.LessonStatus
+import com.example.korkomat.lesson.entity.enumeration.SubjectLevel
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.MapsId
 import jakarta.persistence.OneToOne
 import jakarta.persistence.Table
-import java.time.Instant
 
 @Entity
 @Table(name = "lesson")
 class Lesson {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null
+    @Column(name = "available_slot_id")
+    var id: Long? = null
 
     @Column(name = "lesson_status")
     var status: LessonStatus = LessonStatus.PENDING
@@ -29,10 +26,10 @@ class Lesson {
 
     var place: String? = null
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
     @MapsId
-    @JoinColumn(name = "slot_id")
-    var slot: AvailableSlot = AvailableSlot()
+    @JoinColumn(name = "available_slot_id")
+    lateinit var slot: AvailableSlot
 
 //    @Column(name="start_time")
 //    var startTime: Instant = Instant.now()

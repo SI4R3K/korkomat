@@ -27,6 +27,9 @@ object Constant {
     const val SUBJECT_ALREADY_EXISTS = "Subject with this [%s] already exists."
     const val SUBJECT_NOT_FOUND = "Subject with this [%s] does not exist."
 
+    // AvailableSlot Errors
+    const val INVALID_PROPOSED_TIME = "Invalid proposed time."
+
     // General Errors
     const val ERROR_INTERNAL_SERVER = "An unexpected error occurred on the server."
     const val ERROR_BAD_REQUEST = "Invalid request or credentials."

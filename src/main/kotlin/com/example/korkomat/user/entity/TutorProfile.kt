@@ -2,7 +2,6 @@ package com.example.korkomat.user.entity
 
 import com.example.korkomat.lesson.entity.AvailableSlot
 import com.example.korkomat.lesson.entity.TutorSubject
-import com.example.korkomat.lesson.entity.enumeration.Lesson
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -40,10 +39,7 @@ data class TutorProfile(
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     val user: User,
 
-    @OneToMany(mappedBy = "tutor_profile", cascade = [CascadeType.ALL], orphanRemoval = true)
+    @OneToMany(mappedBy = "tutorProfile", cascade = [CascadeType.ALL], orphanRemoval = true)
     val availableSlots: MutableList<AvailableSlot> = mutableListOf(),
-
-    @OneToMany(mappedBy = "lesson", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val lessons: MutableList<Lesson> = mutableListOf(),
 
     )

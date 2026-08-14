@@ -4,6 +4,7 @@ import com.example.korkomat.common.constant.Constant
 import com.example.korkomat.common.constant.ErrorStatus
 import com.example.korkomat.common.dto.response.Api
 import com.example.korkomat.common.dto.response.Api.Companion.error
+import com.example.korkomat.lesson.excpeptions.InvalidSlotTimeException
 import com.example.korkomat.lesson.excpeptions.SubjectAlreadyExistsException
 import com.example.korkomat.lesson.excpeptions.SubjectDoesNotExistException
 import com.example.korkomat.lesson.excpeptions.TutorSubjectDoesNotExistException
@@ -40,6 +41,15 @@ class SubjectExceptionHandler {
             errorStatus = ErrorStatus.NOT_FOUND
         )
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse)
+    }
+
+    @ExceptionHandler(InvalidSlotTimeException::class)
+    fun handleInvalidSlotTimeException(e: InvalidSlotTimeException): ResponseEntity<Api<Any>> {
+        val errorResponse = error<Any>(
+            message = e.message ?: Constant.INVALID_PROPOSED_TIME,
+            errorStatus = ErrorStatus.CONFLICT
+        )
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse)
     }
 
 }
