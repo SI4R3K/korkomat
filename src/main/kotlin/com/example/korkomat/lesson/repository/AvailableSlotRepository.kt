@@ -11,4 +11,9 @@ interface AvailableSlotRepository: JpaRepository<AvailableSlot, Long> {
         endTime: Instant,
         startTime: Instant
     ): Boolean
+
+    fun findByTutorProfileAndStartTimeGreaterThanEqual(
+        tutorProfile: TutorProfile,
+        timeGreaterThan: Instant = Instant.now()
+    ): List<AvailableSlot>
 }
