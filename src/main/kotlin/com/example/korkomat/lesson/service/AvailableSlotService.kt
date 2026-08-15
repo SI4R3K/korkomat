@@ -6,5 +6,6 @@ import com.example.korkomat.lesson.dto.response.CreateAvailableSlotResponse
 
 interface AvailableSlotService {
     fun createAvailableSlot(request: CreateAvailableSlotRequest): CreateAvailableSlotResponse
-    fun getAvailableSlots(): AvailableSlotsResponse
+    fun getMyAvailableSlots(): AvailableSlotsResponse
+    fun getAllTutorsAvailableSlots(): AvailableSlotsResponse
 }

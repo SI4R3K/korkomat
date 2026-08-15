@@ -26,10 +26,17 @@ class AvailableSlotController(
             .body(Api.ok(response, "Available slot was created."))
     }
 
-    @GetMapping
-    fun getAvailableSlots(): ResponseEntity<Api<AvailableSlotsResponse>> {
-        val response = availableSlotService.getAvailableSlots()
+    @GetMapping("my")
+    fun getMyAvailableSlots(): ResponseEntity<Api<AvailableSlotsResponse>> {
+        val response = availableSlotService.getMyAvailableSlots()
         return ResponseEntity.status(HttpStatus.OK)
             .body(Api.ok(response, "Fetched all slots for the tutor."))
+    }
+
+    @GetMapping("all")
+    fun getTutorsAvailableSlots(): ResponseEntity<Api<AvailableSlotsResponse>> {
+        val response = availableSlotService.getAllTutorsAvailableSlots()
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(Api.ok(response, "Fetched all slots for tutors."))
     }
 }
