@@ -15,6 +15,16 @@ data class AllAvailableSlotsResponse(
     val allAvailableSlots: List<AvailableSlotResponse>
 )
 
+data class UpdateAvailableSlotsResponse(
+    val message: String,
+    val updatedAvailableSlot: AvailableSlotResponse
+)
+
+data class DeleteAvailableSlotsResponse(
+    val message: String,
+    val deletedAvailableSlot: AvailableSlotResponse
+)
+
 data class AvailableSlotResponse(
     val startTime: Instant,
     val endTime: Instant,

@@ -3,10 +3,14 @@ package com.example.korkomat.lesson.service
 import com.example.korkomat.auth.exceptions.UnauthenticatedUserException
 import com.example.korkomat.common.constant.Constant
 import com.example.korkomat.lesson.dto.request.CreateAvailableSlotRequest
+import com.example.korkomat.lesson.dto.request.UpdateAvailableSlotRequest
 import com.example.korkomat.lesson.dto.response.AvailableSlotResponse
 import com.example.korkomat.lesson.dto.response.AvailableSlotsResponse
 import com.example.korkomat.lesson.dto.response.CreateAvailableSlotResponse
+import com.example.korkomat.lesson.dto.response.DeleteAvailableSlotsResponse
+import com.example.korkomat.lesson.dto.response.UpdateAvailableSlotsResponse
 import com.example.korkomat.lesson.entity.AvailableSlot
+import com.example.korkomat.lesson.excpeptions.AvailableSlotDoesNotExistException
 import com.example.korkomat.lesson.excpeptions.InvalidSlotTimeException
 import com.example.korkomat.lesson.repository.AvailableSlotRepository
 import com.example.korkomat.user.entity.TutorProfile
@@ -15,8 +19,6 @@ import com.example.korkomat.user.excpetions.UserNotFoundException
 import com.example.korkomat.user.repository.StudentRepository
 import com.example.korkomat.user.repository.TutorRepository
 import com.example.korkomat.user.repository.UserRepository
-import org.hibernate.validator.constraints.UUID
-import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -34,7 +36,7 @@ class AvailableSlotServiceImpl(
     override fun createAvailableSlot(request: CreateAvailableSlotRequest): CreateAvailableSlotResponse {
         val tutor = getCurrentTutor()
 
-        isProposedTimeValid(request)
+        isProposedTimeValid(request.startTime, request.endTime)
 
         val hasConflict =
             availableSlotRepository
@@ -60,6 +62,53 @@ class AvailableSlotServiceImpl(
         )
         return CreateAvailableSlotResponse(
             message = "Slot created successfully!"
+        )
+    }
+
+    @Transactional
+    override fun updateAvailableSlot(
+        id: Long,
+        request: UpdateAvailableSlotRequest
+    ): UpdateAvailableSlotsResponse {
+        val tutor = getCurrentTutor()
+        val existingSlot = findAvailableSlotForTutor(id, tutor)
+
+        val updatedStartTime = request.startTime ?: existingSlot.startTime
+        val updatedEndTime = request.endTime ?: existingSlot.endTime
+        val upadtedType = request.type ?: existingSlot.type
+
+        isProposedTimeValid(updatedStartTime, updatedEndTime)
+
+        val hasConflict = availableSlotRepository
+            .existsOverlappingSlotExcludingId(
+                tutorProfile = tutor,
+                excludedSlotId = id,
+                startTime = updatedStartTime,
+                endTime = updatedEndTime,
+            )
+
+        if (hasConflict) {
+            throw InvalidSlotTimeException("Overlapping with existing slot is not allowed!")
+        }
+
+        existingSlot.startTime = updatedStartTime
+        existingSlot.endTime = updatedEndTime
+        existingSlot.type = upadtedType
+
+        return UpdateAvailableSlotsResponse(
+            message = "Slot updated successfully!",
+            updatedAvailableSlot = existingSlot.toAvailableSlotResponse()
+        )
+    }
+
+    @Transactional
+    override fun deleteAvailableSlot(id: Long): DeleteAvailableSlotsResponse {
+        val tutor = getCurrentTutor()
+        val existingSlot = findAvailableSlotForTutor(id, tutor)
+        availableSlotRepository.delete(existingSlot)
+        return DeleteAvailableSlotsResponse(
+            message = "Slot deleted successfully!",
+            existingSlot.toAvailableSlotResponse()
         )
     }
 
@@ -106,10 +155,8 @@ class AvailableSlotServiceImpl(
         ?: throw UserNotFoundException("Tutor profile for this [$email] does not exist.")
     }
 
-    private fun isProposedTimeValid(request: CreateAvailableSlotRequest) {
+    private fun isProposedTimeValid(startTime: Instant, endTime: Instant) {
         val currentTime = Instant.now()
-        val startTime = request.startTime
-        val endTime = request.endTime
 
         if (!startTime.isAfter(currentTime)) {
             throw InvalidSlotTimeException("Proposed slot must start in the future!")
@@ -118,6 +165,11 @@ class AvailableSlotServiceImpl(
         if (!startTime.isBefore(endTime)) {
             throw InvalidSlotTimeException("Start time in [$startTime] must be before [$endTime]")
         }
+    }
+
+    private fun findAvailableSlotForTutor(id: Long, tutor: TutorProfile): AvailableSlot {
+        return availableSlotRepository.findByIdAndTutorProfileId(id, requireNotNull(tutor.id))
+            ?: throw AvailableSlotDoesNotExistException("Available slot with this [$id] does not exist.")
     }
 
     private fun AvailableSlot.toAvailableSlotResponse(): AvailableSlotResponse {
