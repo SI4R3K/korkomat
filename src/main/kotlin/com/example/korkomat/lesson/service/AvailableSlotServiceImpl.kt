@@ -2,14 +2,18 @@ package com.example.korkomat.lesson.service
 
 import com.example.korkomat.auth.exceptions.UnauthenticatedUserException
 import com.example.korkomat.common.constant.Constant
+import com.example.korkomat.lesson.dto.request.AvailableSlotFilterRequest
 import com.example.korkomat.lesson.dto.request.CreateAvailableSlotRequest
 import com.example.korkomat.lesson.dto.request.UpdateAvailableSlotRequest
+import com.example.korkomat.lesson.dto.response.AllAvailableSlotsResponse
 import com.example.korkomat.lesson.dto.response.AvailableSlotResponse
 import com.example.korkomat.lesson.dto.response.AvailableSlotsResponse
 import com.example.korkomat.lesson.dto.response.CreateAvailableSlotResponse
 import com.example.korkomat.lesson.dto.response.DeleteAvailableSlotsResponse
+import com.example.korkomat.lesson.dto.response.SearchAvailableSlotsResponse
 import com.example.korkomat.lesson.dto.response.UpdateAvailableSlotsResponse
 import com.example.korkomat.lesson.entity.AvailableSlot
+import com.example.korkomat.lesson.entity.enumeration.SlotStatus
 import com.example.korkomat.lesson.excpeptions.AvailableSlotDoesNotExistException
 import com.example.korkomat.lesson.excpeptions.InvalidSlotTimeException
 import com.example.korkomat.lesson.repository.AvailableSlotRepository
@@ -23,6 +27,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
+import java.util.UUID
 
 @Service
 class AvailableSlotServiceImpl(
@@ -124,16 +129,21 @@ class AvailableSlotServiceImpl(
     }
 
     @Transactional(readOnly = true)
-    override fun getAllTutorsAvailableSlots(): AvailableSlotsResponse {
+    override fun searchForAvailableSlots(filter: AvailableSlotFilterRequest): AllAvailableSlotsResponse {
         if (!isStudent()) {
             throw InvalidProfileException(
                 Constant.STUDENT_PROFILE_NOT_FOUND
             )
         }
-        return AvailableSlotsResponse(
-            availableSlotRepository
-                .findByStartTimeGreaterThanEqual()
-                .map { it.toAllAvailableSlotResponse() }
+        return AllAvailableSlotsResponse(
+            allAvailableSlots = availableSlotRepository
+                .searchAvailableSlots(
+                    fromTime = filter.fromTime ?: Instant.now(),
+                    toTime = filter.toTime ?: Instant.now().plusSeconds(31536000), // additional year
+                    slotStatus = SlotStatus.AVAILABLE,
+                    tutorId = filter.tutorId,
+                    lessonType = filter.lessonType
+                ).map { it.toAllAvailableSlotResponse() }
         )
     }
 
@@ -182,14 +192,12 @@ class AvailableSlotServiceImpl(
         )
     }
 
-    private fun AvailableSlot.toAllAvailableSlotResponse(): AvailableSlotResponse {
-        return AvailableSlotResponse(
+    private fun AvailableSlot.toAllAvailableSlotResponse(): SearchAvailableSlotsResponse {
+        return SearchAvailableSlotsResponse(
+            tutorName = tutorProfile?.user?.getFullName(),
             startTime = startTime,
             endTime = endTime,
-            status = slotStatus,
             type = type,
-            lesson = lesson,
-            tutorId = tutorProfile?.id,
         )
 }
 

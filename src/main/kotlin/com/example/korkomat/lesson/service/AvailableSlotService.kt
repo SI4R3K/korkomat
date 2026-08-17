@@ -1,7 +1,9 @@
 package com.example.korkomat.lesson.service
 
+import com.example.korkomat.lesson.dto.request.AvailableSlotFilterRequest
 import com.example.korkomat.lesson.dto.request.CreateAvailableSlotRequest
 import com.example.korkomat.lesson.dto.request.UpdateAvailableSlotRequest
+import com.example.korkomat.lesson.dto.response.AllAvailableSlotsResponse
 import com.example.korkomat.lesson.dto.response.AvailableSlotsResponse
 import com.example.korkomat.lesson.dto.response.CreateAvailableSlotResponse
 import com.example.korkomat.lesson.dto.response.DeleteAvailableSlotsResponse
@@ -13,5 +15,5 @@ interface AvailableSlotService {
     fun updateAvailableSlot(id: Long, request: UpdateAvailableSlotRequest): UpdateAvailableSlotsResponse
     fun deleteAvailableSlot(id: Long): DeleteAvailableSlotsResponse
 
-    fun getAllTutorsAvailableSlots(): AvailableSlotsResponse
+    fun searchForAvailableSlots(filter: AvailableSlotFilterRequest): AllAvailableSlotsResponse
 }

@@ -7,6 +7,7 @@ import com.example.korkomat.lesson.dto.response.AvailableSlotsResponse
 import com.example.korkomat.lesson.dto.response.CreateAvailableSlotResponse
 import com.example.korkomat.lesson.dto.response.DeleteAvailableSlotsResponse
 import com.example.korkomat.lesson.dto.response.UpdateAvailableSlotsResponse
+import com.example.korkomat.lesson.entity.enumeration.LessonType
 import com.example.korkomat.lesson.service.AvailableSlotService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -17,7 +18,9 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import java.time.Instant
 
 @RestController
 @RequestMapping("/available-slot")
@@ -56,12 +59,5 @@ class TutorAvailableSlotController(
         val response = availableSlotService.deleteAvailableSlot(id)
         return ResponseEntity.status(HttpStatus.OK)
             .body(Api.ok(response, "Deleting slot was successful."))
-    }
-
-    @GetMapping("all")
-    fun getTutorsAvailableSlots(): ResponseEntity<Api<AvailableSlotsResponse>> {
-        val response = availableSlotService.getAllTutorsAvailableSlots()
-        return ResponseEntity.status(HttpStatus.OK)
-            .body(Api.ok(response, "Fetched all slots for tutors."))
     }
 }

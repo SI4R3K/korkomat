@@ -12,7 +12,7 @@ data class AvailableSlotsResponse(
 )
 
 data class AllAvailableSlotsResponse(
-    val allAvailableSlots: List<AvailableSlotResponse>
+    val allAvailableSlots: List<SearchAvailableSlotsResponse>
 )
 
 data class UpdateAvailableSlotsResponse(
@@ -31,5 +31,12 @@ data class AvailableSlotResponse(
     val status: SlotStatus,
     val type: LessonType,
     val lesson: Lesson? = null,
-    val tutorId: UUID? = null
 )
+
+data class SearchAvailableSlotsResponse(
+    val tutorName: String?,
+    val startTime: Instant,
+    val endTime: Instant,
+    val type: LessonType,
+)
+
