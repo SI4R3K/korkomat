@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
+import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import jakarta.persistence.UniqueConstraint
 
@@ -37,6 +38,9 @@ data class TutorSubject(
     @JoinColumn(name = "subject_id", nullable = false)
     var subject: Subject,
 
+    @OneToMany(mappedBy = "tutorSubject")
+    val lessons: List<Lesson> = emptyList(),
+    
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     var level: SubjectLevel,

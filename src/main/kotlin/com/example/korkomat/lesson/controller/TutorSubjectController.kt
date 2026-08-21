@@ -5,7 +5,9 @@ import com.example.korkomat.lesson.dto.request.CreateTutorSubjectRequest
 import com.example.korkomat.lesson.dto.request.UpdateTutorSubjectRequest
 import com.example.korkomat.lesson.dto.response.CreateTutorSubjectResponse
 import com.example.korkomat.lesson.dto.response.DeleteTutorSubjectResponse
+import com.example.korkomat.lesson.dto.response.StudentTutorSubjectsResponse
 import com.example.korkomat.lesson.dto.response.TutorSubjectDetailsResponse
+import com.example.korkomat.lesson.dto.response.TutorSubjectResponse
 import com.example.korkomat.lesson.dto.response.TutorSubjectsResponse
 import com.example.korkomat.lesson.dto.response.UpdateTutorSubjectResponse
 import com.example.korkomat.lesson.service.TutorSubjectService
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.util.UUID
 
 @RestController
 @RequestMapping("/tutor/subjects")
@@ -34,8 +37,6 @@ class TutorSubjectController(
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(Api.ok(response, "Tutor subject created successfully!"))
     }
-
-
 
     @GetMapping
     fun getMyTutorSubjects(): ResponseEntity<Api<TutorSubjectsResponse>> {

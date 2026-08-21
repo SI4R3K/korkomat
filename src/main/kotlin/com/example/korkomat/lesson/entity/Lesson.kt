@@ -23,7 +23,9 @@ data class Lesson(
     @Column(name = "lesson_status")
     var status: LessonStatus = LessonStatus.PENDING,
 
-    var level: SubjectLevel? = null,
+    @ManyToOne
+    @JoinColumn(name = "tutor_subject_id")
+    var tutorSubject: TutorSubject? = null,
 
     var place: String? = null,
 

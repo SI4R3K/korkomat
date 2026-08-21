@@ -7,6 +7,8 @@ import com.example.korkomat.lesson.dto.request.CreateTutorSubjectRequest
 import com.example.korkomat.lesson.dto.request.UpdateTutorSubjectRequest
 import com.example.korkomat.lesson.dto.response.CreateTutorSubjectResponse
 import com.example.korkomat.lesson.dto.response.DeleteTutorSubjectResponse
+import com.example.korkomat.lesson.dto.response.StudentTutorSubjectResponse
+import com.example.korkomat.lesson.dto.response.StudentTutorSubjectsResponse
 import com.example.korkomat.lesson.dto.response.TutorSubjectDetailsResponse
 import com.example.korkomat.lesson.dto.response.TutorSubjectsResponse
 import com.example.korkomat.lesson.dto.response.UpdateTutorSubjectResponse
@@ -14,6 +16,7 @@ import com.example.korkomat.lesson.entity.TutorSubject
 import com.example.korkomat.lesson.excpeptions.SubjectAlreadyExistsException
 import com.example.korkomat.lesson.excpeptions.SubjectDoesNotExistException
 import com.example.korkomat.lesson.excpeptions.TutorSubjectDoesNotExistException
+import com.example.korkomat.lesson.mapper.toStudentTutorSubjectResponse
 import com.example.korkomat.lesson.mapper.toTutorSubjectResponse
 import com.example.korkomat.lesson.repository.SubjectRepository
 import com.example.korkomat.lesson.repository.TutorSubjectRepository
@@ -23,10 +26,12 @@ import com.example.korkomat.user.repository.TutorRepository
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.UUID
 
 @Service
 class TutorSubjectServiceImpl(
     private val tutorSubjectRepository: TutorSubjectRepository,
+    private val tutorRepository: TutorRepository,
     private val subjectRepository: SubjectRepository,
     private val currentProfileService: CurrentProfileService
 ) : TutorSubjectService {
@@ -74,6 +79,8 @@ class TutorSubjectServiceImpl(
 
     @Transactional(readOnly = true)
     override fun getMyTutorSubject(id: Long): TutorSubjectDetailsResponse {
+        currentProfileService.requireCurrentUserToBeTutor()
+
         return TutorSubjectDetailsResponse(
             tutorSubject = getCurrentTutorSubject(id).toTutorSubjectResponse()
         )
@@ -131,6 +138,21 @@ class TutorSubjectServiceImpl(
         tutorSubjectRepository.delete(tutorSubject)
         return DeleteTutorSubjectResponse(
             message = "Tutor subject deleted successfully!"
+        )
+    }
+
+    @Transactional(readOnly = true)
+    override fun getTutorSubjects(tutorId: UUID): StudentTutorSubjectsResponse {
+        currentProfileService.requireCurrentUserToBeStudent()
+
+        if (!tutorRepository.existsById(tutorId)) {
+            throw UserNotFoundException("Tutor with id $tutorId not found")
+        }
+
+        return StudentTutorSubjectsResponse(
+            tutorSubjects = tutorSubjectRepository.findAllByTutorId(tutorId).map {
+                it.toStudentTutorSubjectResponse()
+            }
         )
     }
 

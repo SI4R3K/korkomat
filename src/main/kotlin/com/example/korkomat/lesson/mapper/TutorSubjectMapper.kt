@@ -1,5 +1,6 @@
 package com.example.korkomat.lesson.mapper
 
+import com.example.korkomat.lesson.dto.response.StudentTutorSubjectResponse
 import com.example.korkomat.lesson.dto.response.TutorSubjectResponse
 import com.example.korkomat.lesson.entity.TutorSubject
 
@@ -13,5 +14,14 @@ fun TutorSubject.toTutorSubjectResponse(): TutorSubjectResponse {
         subjectName = subject.name,
         level = level,
         description = description,
+    )
+}
+
+fun TutorSubject.toStudentTutorSubjectResponse(): StudentTutorSubjectResponse {
+    return StudentTutorSubjectResponse(
+        subjectId = id,
+        subjectName = subject.name,
+        level = level,
+        description = description
     )
 }
