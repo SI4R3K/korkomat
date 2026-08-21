@@ -1,6 +1,7 @@
 package com.example.korkomat.lesson.service
 
 import com.example.korkomat.auth.exceptions.UnauthenticatedUserException
+import com.example.korkomat.auth.service.CurrentProfileService
 import com.example.korkomat.common.constant.Constant
 import com.example.korkomat.lesson.dto.request.AvailableSlotFilterRequest
 import com.example.korkomat.lesson.dto.request.CreateAvailableSlotRequest
@@ -16,6 +17,7 @@ import com.example.korkomat.lesson.entity.AvailableSlot
 import com.example.korkomat.lesson.entity.enumeration.SlotStatus
 import com.example.korkomat.lesson.excpeptions.AvailableSlotDoesNotExistException
 import com.example.korkomat.lesson.excpeptions.InvalidSlotTimeException
+import com.example.korkomat.lesson.excpeptions.SlotUnavailableException
 import com.example.korkomat.lesson.repository.AvailableSlotRepository
 import com.example.korkomat.user.entity.TutorProfile
 import com.example.korkomat.user.excpetions.InvalidProfileException
@@ -31,15 +33,13 @@ import java.util.UUID
 
 @Service
 class AvailableSlotServiceImpl(
-    private val tutorRepository: TutorRepository,
-    private val studentRepository: StudentRepository,
-    private val userRepository: UserRepository,
     private val availableSlotRepository: AvailableSlotRepository,
+    private val currentProfileService: CurrentProfileService
 ) : AvailableSlotService {
 
     @Transactional
     override fun createAvailableSlot(request: CreateAvailableSlotRequest): CreateAvailableSlotResponse {
-        val tutor = getCurrentTutor()
+        val tutor = currentProfileService.getCurrentTutor()
 
         isProposedTimeValid(request.startTime, request.endTime)
 
@@ -75,12 +75,12 @@ class AvailableSlotServiceImpl(
         id: Long,
         request: UpdateAvailableSlotRequest
     ): UpdateAvailableSlotsResponse {
-        val tutor = getCurrentTutor()
+        val tutor = currentProfileService.getCurrentTutor()
         val existingSlot = findAvailableSlotForTutor(id, tutor)
 
         val updatedStartTime = request.startTime ?: existingSlot.startTime
         val updatedEndTime = request.endTime ?: existingSlot.endTime
-        val upadtedType = request.type ?: existingSlot.type
+        val updatedType = request.type ?: existingSlot.type
 
         isProposedTimeValid(updatedStartTime, updatedEndTime)
 
@@ -98,7 +98,7 @@ class AvailableSlotServiceImpl(
 
         existingSlot.startTime = updatedStartTime
         existingSlot.endTime = updatedEndTime
-        existingSlot.type = upadtedType
+        existingSlot.type = updatedType
 
         return UpdateAvailableSlotsResponse(
             message = "Slot updated successfully!",
@@ -108,9 +108,19 @@ class AvailableSlotServiceImpl(
 
     @Transactional
     override fun deleteAvailableSlot(id: Long): DeleteAvailableSlotsResponse {
-        val tutor = getCurrentTutor()
+        val tutor = currentProfileService.getCurrentTutor()
         val existingSlot = findAvailableSlotForTutor(id, tutor)
+
+        if (existingSlot.slotStatus != SlotStatus.AVAILABLE) {
+            throw SlotUnavailableException(
+                String.format(
+                    Constant.SLOT_RESERVED, id
+                )
+            )
+        }
+
         availableSlotRepository.delete(existingSlot)
+
         return DeleteAvailableSlotsResponse(
             message = "Slot deleted successfully!",
             existingSlot.toAvailableSlotResponse()
@@ -119,7 +129,7 @@ class AvailableSlotServiceImpl(
 
     @Transactional(readOnly = true)
     override fun getMyAvailableSlots(): AvailableSlotsResponse {
-        val tutor = getCurrentTutor()
+        val tutor = currentProfileService.getCurrentTutor()
 
         return AvailableSlotsResponse(
             availableSlotRepository
@@ -130,11 +140,8 @@ class AvailableSlotServiceImpl(
 
     @Transactional(readOnly = true)
     override fun searchForAvailableSlots(filter: AvailableSlotFilterRequest): AllAvailableSlotsResponse {
-        if (!isStudent()) {
-            throw InvalidProfileException(
-                Constant.STUDENT_PROFILE_NOT_FOUND
-            )
-        }
+        currentProfileService.requireCurrentUserToBeStudent()
+
         return AllAvailableSlotsResponse(
             allAvailableSlots = availableSlotRepository
                 .searchAvailableSlots(
@@ -145,24 +152,6 @@ class AvailableSlotServiceImpl(
                     lessonType = filter.lessonType
                 ).map { it.toAllAvailableSlotResponse() }
         )
-    }
-
-    private fun isStudent(): Boolean {
-        val email = SecurityContextHolder.getContext().authentication?.name
-            ?: throw UnauthenticatedUserException("Authenticated user not found in security context.")
-
-        val user = userRepository.findByEmail(email)
-            ?: throw UserNotFoundException("User not found.")
-
-        return studentRepository.existsByUserId(user.id!!)
-    }
-
-    private fun getCurrentTutor(): TutorProfile {
-        val email = SecurityContextHolder.getContext().authentication?.name
-            ?: throw UnauthenticatedUserException("Authenticated user not found in security context.")
-
-        return tutorRepository.findByUserEmail(email)
-        ?: throw UserNotFoundException("Tutor profile for this [$email] does not exist.")
     }
 
     private fun isProposedTimeValid(startTime: Instant, endTime: Instant) {
@@ -188,7 +177,7 @@ class AvailableSlotServiceImpl(
             endTime = endTime,
             status = slotStatus,
             type = type,
-            lesson = lesson,
+            lessonId = lesson?.id,
         )
     }
 

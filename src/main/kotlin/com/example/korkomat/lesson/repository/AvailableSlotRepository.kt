@@ -11,6 +11,7 @@ import java.time.Instant
 import java.util.UUID
 
 interface AvailableSlotRepository: JpaRepository<AvailableSlot, Long> {
+
     fun existsByTutorProfileAndStartTimeLessThanAndEndTimeGreaterThan(
         tutorProfile: TutorProfile,
         endTime: Instant,

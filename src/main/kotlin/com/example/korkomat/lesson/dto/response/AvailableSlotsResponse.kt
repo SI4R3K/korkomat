@@ -30,7 +30,7 @@ data class AvailableSlotResponse(
     val endTime: Instant,
     val status: SlotStatus,
     val type: LessonType,
-    val lesson: Lesson? = null,
+    val lessonId: Long? = null,
 )
 
 data class SearchAvailableSlotsResponse(

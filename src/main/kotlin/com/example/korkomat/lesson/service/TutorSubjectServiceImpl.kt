@@ -1,6 +1,7 @@
 package com.example.korkomat.lesson.service
 
 import com.example.korkomat.auth.exceptions.UnauthenticatedUserException
+import com.example.korkomat.auth.service.CurrentProfileService
 import com.example.korkomat.common.constant.Constant
 import com.example.korkomat.lesson.dto.request.CreateTutorSubjectRequest
 import com.example.korkomat.lesson.dto.request.UpdateTutorSubjectRequest
@@ -27,12 +28,12 @@ import org.springframework.transaction.annotation.Transactional
 class TutorSubjectServiceImpl(
     private val tutorSubjectRepository: TutorSubjectRepository,
     private val subjectRepository: SubjectRepository,
-    private val tutorRepository: TutorRepository,
+    private val currentProfileService: CurrentProfileService
 ) : TutorSubjectService {
 
     @Transactional
     override fun createTutorSubject(request: CreateTutorSubjectRequest): CreateTutorSubjectResponse {
-        val tutor = getCurrentTutor()
+        val tutor = currentProfileService.getCurrentTutor()
         val subject = subjectRepository.findById(request.subjectId)
             .orElseThrow {
                 SubjectDoesNotExistException(String.format(Constant.SUBJECT_NOT_FOUND, request.subjectId))
@@ -64,7 +65,7 @@ class TutorSubjectServiceImpl(
 
     @Transactional(readOnly = true)
     override fun getMyTutorSubjects(): TutorSubjectsResponse {
-        val tutor = getCurrentTutor()
+        val tutor = currentProfileService.getCurrentTutor()
         return TutorSubjectsResponse(
             tutorSubjects = tutorSubjectRepository.findAllByTutorId(requireNotNull(tutor.id))
                 .map { it.toTutorSubjectResponse() }
@@ -83,7 +84,7 @@ class TutorSubjectServiceImpl(
         id: Long,
         request: UpdateTutorSubjectRequest
     ): UpdateTutorSubjectResponse {
-        val tutor = getCurrentTutor()
+        val tutor = currentProfileService.getCurrentTutor()
         val tutorSubject = findTutorSubjectForTutor(id, tutor)
 
         // verifying requested data
@@ -134,20 +135,12 @@ class TutorSubjectServiceImpl(
     }
 
     private fun getCurrentTutorSubject(id: Long): TutorSubject {
-        val tutor = getCurrentTutor()
+        val tutor = currentProfileService.getCurrentTutor()
         return findTutorSubjectForTutor(id, tutor)
     }
 
     private fun findTutorSubjectForTutor(id: Long, tutor: TutorProfile): TutorSubject {
         return tutorSubjectRepository.findByIdAndTutorId(id, requireNotNull(tutor.id))
             ?: throw TutorSubjectDoesNotExistException("Tutor subject with this [$id] does not exist.")
-    }
-
-    private fun getCurrentTutor(): TutorProfile {
-        val email = SecurityContextHolder.getContext().authentication?.name
-            ?: throw UnauthenticatedUserException("Authenticated user not found in security context")
-
-        return tutorRepository.findByUserEmail(email)
-            ?: throw UserNotFoundException("Tutor profile for this [$email] does not exist.")
     }
 }

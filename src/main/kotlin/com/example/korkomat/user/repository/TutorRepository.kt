@@ -6,5 +6,6 @@ import java.util.UUID
 
 interface TutorRepository: JpaRepository<TutorProfile, UUID> {
     fun existsByUserId(id: UUID): Boolean
+    fun existsByUserEmail(email: String): Boolean
     fun findByUserEmail(email: String): TutorProfile?
 }

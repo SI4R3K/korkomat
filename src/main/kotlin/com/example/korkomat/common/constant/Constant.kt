@@ -36,6 +36,13 @@ object Constant {
 
     // AvailableSlot Errors
     const val INVALID_PROPOSED_TIME = "Invalid proposed time."
+    const val AVAILABLE_SLOT_NOT_FOUND = "Available slot with this [%s] was not found."
+    const val UNAVAILABLE_SLOT = "Slot with this [%s] is unavailable."
+    const val SLOT_RESERVED = "Slot with this [%s] is reserved."
+    const val AVAILABLE_SLOT_ALREADY_STARTED = "Slot with this [%s] already started."
+
+    // Lessons Error
+    const val LESSON_OVERLAPPING = "There exists an overlapping slot for this [%s]"
 
     // General Errors
     const val ERROR_INTERNAL_SERVER = "An unexpected error occurred on the server."
