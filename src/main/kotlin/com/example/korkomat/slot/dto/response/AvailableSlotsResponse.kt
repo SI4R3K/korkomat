@@ -23,6 +23,7 @@ data class DeleteAvailableSlotsResponse(
 )
 
 data class AvailableSlotResponse(
+    val slotId: Long?,
     val startTime: Instant,
     val endTime: Instant,
     val status: SlotStatus,
@@ -31,6 +32,7 @@ data class AvailableSlotResponse(
 )
 
 data class SearchAvailableSlotsResponse(
+    val slotId: Long?,
     val tutorName: String?,
     val startTime: Instant,
     val endTime: Instant,
