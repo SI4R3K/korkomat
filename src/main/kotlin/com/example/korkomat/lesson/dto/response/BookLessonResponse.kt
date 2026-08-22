@@ -1,7 +1,7 @@
 package com.example.korkomat.lesson.dto.response
 
 import com.example.korkomat.lesson.entity.enumeration.LessonStatus
-import com.example.korkomat.lesson.entity.enumeration.SubjectLevel
+import com.example.korkomat.subject.entity.enumeration.SubjectLevel
 import java.time.Instant
 
 data class BookLessonResponse(

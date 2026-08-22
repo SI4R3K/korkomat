@@ -1,7 +1,7 @@
 package com.example.korkomat.user.entity
 
-import com.example.korkomat.lesson.entity.AvailableSlot
-import com.example.korkomat.lesson.entity.TutorSubject
+import com.example.korkomat.slot.entity.AvailableSlot
+import com.example.korkomat.subject.entity.TutorSubject
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity

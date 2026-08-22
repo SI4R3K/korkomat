@@ -1,11 +1,12 @@
 package com.example.korkomat.lesson.entity
 
+import com.example.korkomat.slot.entity.AvailableSlot
+import com.example.korkomat.subject.entity.TutorSubject
 import com.example.korkomat.lesson.entity.enumeration.LessonStatus
-import com.example.korkomat.lesson.entity.enumeration.SubjectLevel
+import com.example.korkomat.lesson.exceptions.InvalidLessonStatusException
 import com.example.korkomat.user.entity.StudentProfile
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
-import jakarta.persistence.FetchType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
@@ -38,7 +39,24 @@ data class Lesson(
     @JoinColumn(name = "student_profile_id")
     var studentProfile: StudentProfile,
 ){
+    fun confirm() {
+        if (status != LessonStatus.PENDING) {
+            throw InvalidLessonStatusException(
+                "Lesson status has already been updated. Current status is ${status}."
+            )
+        }
 
+        status = LessonStatus.CONFIRMED
+    }
+
+    fun reject() {
+        if (status != LessonStatus.PENDING) {
+            throw InvalidLessonStatusException(
+                "Lesson status has already been updated. Current status is ${status}."
+            )
+        }
+        status = LessonStatus.REJECTED
+    }
 //    @Column(name="start_time")
 //    var startTime: Instant = Instant.now()
 //

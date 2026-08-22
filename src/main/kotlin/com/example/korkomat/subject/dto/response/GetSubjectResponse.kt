@@ -1,0 +1,17 @@
+package com.example.korkomat.subject.dto.response
+
+
+data class GetSubjectsResponse(
+    val subjects: List<SubjectResponse>
+)
+
+data class GetSubjectResponse(
+    val subject: SubjectResponse
+)
+
+data class SubjectResponse(
+    val id: Long?,
+    val name: String
+)
+
+

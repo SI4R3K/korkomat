@@ -5,14 +5,14 @@ import com.example.korkomat.common.constant.Constant
 import com.example.korkomat.lesson.dto.request.BookLessonRequest
 import com.example.korkomat.lesson.dto.response.BookLessonResponse
 import com.example.korkomat.lesson.entity.Lesson
-import com.example.korkomat.lesson.entity.enumeration.SlotStatus
-import com.example.korkomat.lesson.excpeptions.AvailableSlotDoesNotExistException
-import com.example.korkomat.lesson.excpeptions.InvalidSlotTimeException
-import com.example.korkomat.lesson.excpeptions.SlotUnavailableException
-import com.example.korkomat.lesson.excpeptions.TutorSubjectDoesNotExistException
-import com.example.korkomat.lesson.repository.AvailableSlotRepository
+import com.example.korkomat.slot.entity.enumeration.SlotStatus
+import com.example.korkomat.slot.exceptions.AvailableSlotDoesNotExistException
+import com.example.korkomat.slot.exceptions.InvalidSlotTimeException
+import com.example.korkomat.slot.exceptions.SlotUnavailableException
+import com.example.korkomat.subject.excpeptions.TutorSubjectDoesNotExistException
+import com.example.korkomat.slot.repository.AvailableSlotRepository
 import com.example.korkomat.lesson.repository.LessonRepository
-import com.example.korkomat.lesson.repository.TutorSubjectRepository
+import com.example.korkomat.subject.repository.TutorSubjectRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -48,14 +48,6 @@ class BookLessonServiceImpl(
             )
         }
 
-        if (!bookingSlot.slotStatus.equals(SlotStatus.AVAILABLE)) {
-            throw SlotUnavailableException(
-                String.format(
-                    Constant.UNAVAILABLE_SLOT, slotId
-                )
-            )
-        }
-
         val hasOverlappingLesson = lessonRepository.existsOverlappingLesson(
             studentProfile = student,
             startTime = bookingSlot.startTime,
@@ -75,16 +67,15 @@ class BookLessonServiceImpl(
                 String.format(Constant.SUBJECT_NOT_FOUND, request.tutorSubjectId)
             )
 
+        bookingSlot.reserve()
+
         val lesson = Lesson(
             slot = bookingSlot,
             studentProfile = student,
             tutorSubject = tutorSubject,
             place = request.place,
             )
-
         lessonRepository.save(lesson)
-
-        bookingSlot.slotStatus = SlotStatus.RESERVED
 
         return BookLessonResponse(
             message = "Slot reserved. Awaiting tutor confirmation.",

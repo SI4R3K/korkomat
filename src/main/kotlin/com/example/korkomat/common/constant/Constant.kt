@@ -40,9 +40,11 @@ object Constant {
     const val UNAVAILABLE_SLOT = "Slot with this [%s] is unavailable."
     const val SLOT_RESERVED = "Slot with this [%s] is reserved."
     const val AVAILABLE_SLOT_ALREADY_STARTED = "Slot with this [%s] already started."
+    const val INVALID_SLOT_STATUS = "Slot with status [%] is invalid."
 
     // Lessons Error
     const val LESSON_OVERLAPPING = "There exists an overlapping slot for this [%s]"
+    const val NO_LESSONS = "There are no lessons to view"
 
     // General Errors
     const val ERROR_INTERNAL_SERVER = "An unexpected error occurred on the server."
