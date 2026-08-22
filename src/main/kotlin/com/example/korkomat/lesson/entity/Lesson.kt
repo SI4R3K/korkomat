@@ -42,7 +42,7 @@ data class Lesson(
     fun confirm() {
         if (status != LessonStatus.PENDING) {
             throw InvalidLessonStatusException(
-                "Lesson status has already been updated. Current status is ${status}."
+                "Lesson status has already been updated. Current status is $status."
             )
         }
 
@@ -52,7 +52,7 @@ data class Lesson(
     fun reject() {
         if (status != LessonStatus.PENDING) {
             throw InvalidLessonStatusException(
-                "Lesson status has already been updated. Current status is ${status}."
+                "Lesson status has already been updated. Current status is $status."
             )
         }
         status = LessonStatus.REJECTED

@@ -68,12 +68,14 @@ data class AvailableSlot(
     }
 
     fun release() {
-        if (slotStatus != SlotStatus.AVAILABLE) {
+        if (slotStatus != SlotStatus.RESERVED) {
             throw InvalidSlotStatusException(
                 String.format(
-                    Constant.INVALID_SLOT_STATUS, slotStatus
+                    Constant.INVALID_SLOT_STATUS,
+                    slotStatus
                 )
             )
         }
+        slotStatus = SlotStatus.AVAILABLE
     }
 }

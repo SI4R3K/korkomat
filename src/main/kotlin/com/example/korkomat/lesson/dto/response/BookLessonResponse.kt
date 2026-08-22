@@ -6,8 +6,8 @@ import java.time.Instant
 
 data class BookLessonResponse(
     val message: String,
-    val subjectName: String,
-    val level: SubjectLevel,
+    val subjectName: String?,
+    val level: SubjectLevel?,
     val startTime: Instant,
     val endTime: Instant,
     val tutorName: String?,

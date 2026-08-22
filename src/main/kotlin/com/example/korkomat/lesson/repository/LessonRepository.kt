@@ -28,15 +28,17 @@ interface LessonRepository: JpaRepository<Lesson, Long> {
     ): List<Lesson>
 
     @Query("""
-        SELECT CASE WHEN COUNT(l) > 0 THEN true ELSE false END
-        FROM Lesson l
-        WHERE l.studentProfile = :studentProfile
-        AND l.slot.startTime < :endTime
-        AND l.slot.endTime > :startTime
-    """)
+    SELECT CASE WHEN COUNT(l) > 0 THEN true ELSE false END
+    FROM Lesson l
+    WHERE l.studentProfile = :studentProfile
+      AND l.status IN :activeStatuses
+      AND l.slot.startTime < :endTime
+      AND l.slot.endTime > :startTime
+""")
     fun existsOverlappingLesson(
         studentProfile: StudentProfile,
         startTime: Instant,
-        endTime: Instant
+        endTime: Instant,
+        activeStatuses: List<LessonStatus>
     ): Boolean
 }

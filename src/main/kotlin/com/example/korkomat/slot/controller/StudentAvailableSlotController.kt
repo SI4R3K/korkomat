@@ -25,6 +25,4 @@ class StudentAvailableSlotController (
         return ResponseEntity.status(HttpStatus.OK)
             .body(Api.ok(response, "Available slots retrieved successfully."))
     }
-
-
 }
