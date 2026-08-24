@@ -1,6 +1,7 @@
 package com.example.korkomat.user.service
 
 import com.example.korkomat.common.constant.Constant
+import com.example.korkomat.subject.entity.TutorSubject
 import com.example.korkomat.user.dto.response.AdminGetStudentResponse
 import com.example.korkomat.user.dto.response.AdminGetStudentsResponse
 import com.example.korkomat.user.dto.response.AdminGetTutorResponse
@@ -9,6 +10,7 @@ import com.example.korkomat.user.dto.response.AdminGetUserResponse
 import com.example.korkomat.user.dto.response.AdminGetUsersResponse
 import com.example.korkomat.user.dto.response.AdminStudentResponse
 import com.example.korkomat.user.dto.response.AdminTutorResponse
+import com.example.korkomat.user.dto.response.AdminTutorSubjectResponse
 import com.example.korkomat.user.dto.response.AdminUserResponse
 import com.example.korkomat.user.entity.StudentProfile
 import com.example.korkomat.user.entity.TutorProfile
@@ -106,8 +108,17 @@ class AdminServiceImpl(
             id = id,
             bio = bio,
             hourlyRate = hourlyRate,
-            tutorSubjectId = tutorSubject?.id,
+            tutorSubjects = tutorSubjects.map { it.toAdminResponse() },
             user = user.toAdminResponse()
+        )
+    }
+
+    private fun TutorSubject.toAdminResponse(): AdminTutorSubjectResponse {
+        return AdminTutorSubjectResponse(
+            id = id,
+            subject = subject.name,
+            level = level,
+            description = description
         )
     }
 }

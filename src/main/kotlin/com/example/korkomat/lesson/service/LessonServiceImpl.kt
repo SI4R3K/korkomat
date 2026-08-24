@@ -73,7 +73,7 @@ class LessonServiceImpl(
         }
 
         lesson.confirm()
-        lesson.slot.book()
+        lesson.slot.book(lesson)
 
         return lesson.toTutorLessonResponse()
     }

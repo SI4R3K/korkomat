@@ -60,4 +60,6 @@ interface AvailableSlotRepository: JpaRepository<AvailableSlot, Long> {
         @Param("tutorId") tutorId: UUID?,
         @Param("lessonType") lessonType: LessonType?
     ): List<AvailableSlot>
+
+    fun findByTutorProfileUserEmailAndStartTimeAndEndTime(tutorEmail: String, startTime: Instant, endTime: Instant): AvailableSlot?
 }

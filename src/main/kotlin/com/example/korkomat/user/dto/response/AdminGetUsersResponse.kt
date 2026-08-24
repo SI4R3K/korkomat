@@ -1,6 +1,7 @@
 package com.example.korkomat.user.dto.response
 
 import com.example.korkomat.auth.authorization.Role
+import com.example.korkomat.subject.entity.enumeration.SubjectLevel
 import java.math.BigDecimal
 import java.time.Instant
 import java.util.UUID
@@ -49,6 +50,13 @@ data class AdminTutorResponse(
     val id: UUID?,
     val bio: String,
     val hourlyRate: BigDecimal,
-    val tutorSubjectId: Long?,
+    val tutorSubjects: List<AdminTutorSubjectResponse>,
     val user: AdminUserResponse
+)
+
+data class AdminTutorSubjectResponse(
+    val id: Long?,
+    val subject: String,
+    val level: SubjectLevel,
+    val description: String?
 )

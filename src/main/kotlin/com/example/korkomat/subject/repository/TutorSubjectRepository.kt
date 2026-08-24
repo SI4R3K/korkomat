@@ -39,4 +39,6 @@ interface TutorSubjectRepository : JpaRepository<TutorSubject, Long> {
         @Param("tutorId") tutorId: UUID?,
         @Param("tutorEmailPattern") tutorEmailPattern: String?,
     ): List<TutorSubject>
+
+    fun findByTutorUserEmailAndSubjectNameAndLevel(tutorEmail: String, subjectName: String, level: SubjectLevel): TutorSubject?
 }

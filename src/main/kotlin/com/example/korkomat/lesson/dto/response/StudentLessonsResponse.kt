@@ -8,6 +8,14 @@ data class GetLessonsResponse(
     val lessons: List<LessonResponse>
 )
 
+data class CancelLessonResponse(
+    val message: String,
+    val lessonId: Long?,
+    val startedAt: Instant,
+    val finishedAt: Instant,
+    val tutorName: String?
+)
+
 sealed interface LessonResponse {
     val id: Long?
     val status: LessonStatus

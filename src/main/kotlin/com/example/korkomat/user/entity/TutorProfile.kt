@@ -31,9 +31,11 @@ data class TutorProfile(
     @Column(nullable = false)
     val hourlyRate: BigDecimal,
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tutor_subject_id")
-    val tutorSubject: TutorSubject? = null,
+    @OneToMany(
+        mappedBy = "tutor",
+        cascade = [CascadeType.ALL],
+        orphanRemoval = true)
+    val tutorSubjects: MutableList<TutorSubject> = mutableListOf(),
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, unique = true)

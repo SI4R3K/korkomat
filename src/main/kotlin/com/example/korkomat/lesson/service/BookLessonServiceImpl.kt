@@ -5,6 +5,7 @@ import com.example.korkomat.auth.service.CurrentProfileService
 import com.example.korkomat.common.constant.Constant
 import com.example.korkomat.lesson.dto.request.BookLessonRequest
 import com.example.korkomat.lesson.dto.response.BookLessonResponse
+import com.example.korkomat.lesson.dto.response.CancelLessonResponse
 import com.example.korkomat.lesson.dto.response.LessonResponse
 import com.example.korkomat.lesson.dto.response.StudentLessonResponse
 import com.example.korkomat.lesson.entity.Lesson
@@ -36,14 +37,14 @@ class BookLessonServiceImpl(
     ): BookLessonResponse {
         val student = currentProfileService.getCurrentStudent()
 
-        val bookingSlot = availableSlotRepository.findByIdOrNull(slotId)
+        val slotToBeReserved = availableSlotRepository.findByIdOrNull(slotId)
             ?: throw AvailableSlotDoesNotExistException(
                 String.format(
                     Constant.AVAILABLE_SLOT_NOT_FOUND, slotId
                 )
             )
 
-        if (bookingSlot.startTime <= Instant.now()) {
+        if (slotToBeReserved.startTime <= Instant.now()) {
             throw InvalidSlotTimeException(
                 String.format(
                     Constant.AVAILABLE_SLOT_ALREADY_STARTED, slotId
@@ -53,8 +54,8 @@ class BookLessonServiceImpl(
 
         val hasOverlappingLesson = lessonRepository.existsOverlappingLesson(
             studentProfile = student,
-            startTime = bookingSlot.startTime,
-            endTime = bookingSlot.endTime,
+            startTime = slotToBeReserved.startTime,
+            endTime = slotToBeReserved.endTime,
             activeStatuses = listOf(
                 LessonStatus.PENDING,
                 LessonStatus.CONFIRMED
@@ -74,29 +75,29 @@ class BookLessonServiceImpl(
                 String.format(Constant.SUBJECT_NOT_FOUND, request.tutorSubjectId)
             )
 
-        bookingSlot.reserve()
-
         val lesson = Lesson(
-            slot = bookingSlot,
+            slot = slotToBeReserved,
             studentProfile = student,
             tutorSubject = tutorSubject,
             place = request.place,
             )
+
         lessonRepository.save(lesson)
+        slotToBeReserved.reserve(lesson)
 
         return BookLessonResponse(
             message = "Slot reserved. Awaiting tutor confirmation.",
             subjectName = tutorSubject.subject.name,
             level = tutorSubject.level,
-            startTime = bookingSlot.startTime,
-            endTime = bookingSlot.endTime,
-            tutorName = bookingSlot.tutorProfile?.user?.username,
+            startTime = slotToBeReserved.startTime,
+            endTime = slotToBeReserved.endTime,
+            tutorName = slotToBeReserved.tutorProfile?.user?.username,
             lessonStatus = lesson.status,
         )
     }
 
     @Transactional
-    override fun cancelReservation(id: Long): StudentLessonResponse {
+    override fun cancelReservation(id: Long): CancelLessonResponse {
         val student = currentProfileService.getCurrentStudent()
         val lessonToBeCancelled = lessonRepository.findByIdOrNull(id)
             ?: throw LessonDoesNotExistException(
@@ -109,17 +110,23 @@ class BookLessonServiceImpl(
             )
         }
 
+        if (lessonToBeCancelled.status == LessonStatus.CONFIRMED) {
+            throw ForbiddenAccessException(
+                "Student can not cancel already confirmed lesson."
+            )
+        }
+
+        val response = CancelLessonResponse(
+            message = "Lesson cancelled",
+            lessonId = lessonToBeCancelled.id,
+            startedAt = lessonToBeCancelled.slot.startTime,
+            finishedAt = lessonToBeCancelled.slot.endTime,
+            tutorName = lessonToBeCancelled.slot.tutorProfile?.user?.getFullName(),
+        )
+
         lessonToBeCancelled.slot.release()
         lessonRepository.delete(lessonToBeCancelled)
 
-        return StudentLessonResponse(
-            id = lessonToBeCancelled.id,
-            status = lessonToBeCancelled.status,
-            startTime = lessonToBeCancelled.slot.startTime,
-            endTime = lessonToBeCancelled.slot.endTime,
-            place = lessonToBeCancelled.place,
-            subjectName = lessonToBeCancelled.tutorSubject?.subject?.name,
-            tutorName = lessonToBeCancelled.slot.tutorProfile?.user?.getFullName(),
-        )
+        return response
     }
 }

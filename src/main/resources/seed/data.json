@@ -1,0 +1,81 @@
+{
+  "subjects": [
+    {
+      "name": "Matematyka"
+    },
+    {
+      "name": "Fizyka"
+    },
+    {
+      "name": "Jezyk angielski"
+    }
+  ],
+
+  "students": [
+    {
+      "email": "mark@korkomat.pl",
+      "password": "mark123",
+      "firstName": "Mark",
+      "lastName": "BigToe"
+    },
+    {
+      "email": "emma@korkomat.pl",
+      "password": "emma123",
+      "firstName": "Emma",
+      "lastName": "BigTit"
+    }
+  ],
+
+  "tutors": [
+    {
+      "email": "bob@korkomat.pl",
+      "password": "bob123",
+      "firstName": "Bob",
+      "lastName": "BigBalls",
+
+      "bio": "Nauczyciel matematyki i fizyki z kilkuletnim doświadczeniem.",
+      "hourlyRate": 80.00,
+
+      "subjects": [
+        {
+          "name": "Matematyka",
+          "level": "MATURA_EXAM",
+          "description": "Przygotowanie do matury rozszerzonej."
+        },
+        {
+          "name": "Fizyka",
+          "level": "UNIVERSITY",
+          "description": "Pomagam studentom w przygotowaniach do kolokwium."
+        }
+      ],
+
+      "slots": [
+        {
+          "startTime": "2026-09-01T15:00:00Z",
+          "endTime": "2026-09-01T16:00:00Z",
+          "type": "ONLINE"
+        },
+        {
+          "startTime": "2026-09-02T15:00:00Z",
+          "endTime": "2026-09-02T16:00:00Z",
+          "type": "OPTIONAL"
+        }
+      ]
+    }
+  ],
+
+  "lessons": [
+    {
+      "studentEmail": "mark@korkomat.pl",
+      "tutorEmail": "bob@korkomat.pl",
+      "subjectName": "Matematyka",
+      "level": "MATURA_EXAM",
+
+      "startTime": "2026-09-01T15:00:00Z",
+      "endTime": "2026-09-01T16:00:00Z",
+
+      "status": "PENDING",
+      "place": "discord app"
+    }
+  ]
+}

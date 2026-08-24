@@ -4,6 +4,7 @@ import com.example.korkomat.common.dto.response.Api
 import com.example.korkomat.lesson.dto.request.BookLessonRequest
 import com.example.korkomat.lesson.dto.request.LessonFilterRequest
 import com.example.korkomat.lesson.dto.response.BookLessonResponse
+import com.example.korkomat.lesson.dto.response.CancelLessonResponse
 import com.example.korkomat.lesson.dto.response.GetLessonsResponse
 import com.example.korkomat.lesson.dto.response.LessonResponse
 import com.example.korkomat.lesson.dto.response.StudentLessonResponse
@@ -43,7 +44,7 @@ class StudentLessonController(
     @PostMapping("cancel/{lessonId}")
     fun cancelReservation(
         @PathVariable lessonId: Long,
-    ): ResponseEntity<Api<StudentLessonResponse>> {
+    ): ResponseEntity<Api<CancelLessonResponse>> {
         val response = bookLessonService.cancelReservation(lessonId)
         return ResponseEntity.status(HttpStatus.OK)
             .body(Api.ok(response, "Cancelled lesson reservation"))

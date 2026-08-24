@@ -10,6 +10,8 @@ import com.example.korkomat.user.entity.TutorProfile
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
@@ -31,6 +33,7 @@ data class AvailableSlot(
     @JoinColumn(name = "tutor_profile_id", nullable = false)
     val tutorProfile: TutorProfile? = null,
 
+    @Enumerated(EnumType.STRING)
     var slotStatus: SlotStatus = SlotStatus.AVAILABLE,
 
     var type: LessonType = LessonType.OPTIONAL,
@@ -45,20 +48,24 @@ data class AvailableSlot(
     var lesson: Lesson? = null,
     ) {
 
-    fun reserve() {
-        if (slotStatus != SlotStatus.AVAILABLE) {
+    fun reserve(lessonToReserve: Lesson) {
+        if (slotStatus == SlotStatus.AVAILABLE) {
+            slotStatus = SlotStatus.RESERVED
+            lesson = lessonToReserve
+        } else {
             throw SlotUnavailableException(
                 String.format(
                     Constant.UNAVAILABLE_SLOT, id
                 )
             )
         }
-
-        slotStatus = SlotStatus.RESERVED
     }
 
-    fun book() {
-        if (slotStatus != SlotStatus.RESERVED) {
+    fun book(lessonToBook: Lesson) {
+        if (slotStatus == SlotStatus.RESERVED) {
+            slotStatus = SlotStatus.BOOKED
+            lesson = lessonToBook
+        } else {
             throw SlotUnavailableException(
                 String.format(
                     Constant.UNAVAILABLE_SLOT, id
@@ -68,14 +75,13 @@ data class AvailableSlot(
     }
 
     fun release() {
-        if (slotStatus != SlotStatus.RESERVED) {
-            throw InvalidSlotStatusException(
-                String.format(
-                    Constant.INVALID_SLOT_STATUS,
-                    slotStatus
-                )
+        if (slotStatus != SlotStatus.AVAILABLE) {
+            slotStatus = SlotStatus.AVAILABLE
+            lesson = null
+        } else {
+            throw SlotUnavailableException(
+                "Slot is already available."
             )
         }
-        slotStatus = SlotStatus.AVAILABLE
     }
 }

@@ -15,7 +15,7 @@ spring:
         driver-class-name: org.postgresql.Driver
     jpa:
         hibernate:
-            ddl-auto: update # Hibernate sam stworzy/zaktualizuje tabele na podstawie encji w Kotlinie
+            ddl-auto: create-drop # Hibernate sam stworzy/zaktualizuje tabele na podstawie encji w Kotlinie
         show-sql: true # Wyświetla zapytania SQL w konsoli (przydatne do nauki!)
         properties:
             hibernate:

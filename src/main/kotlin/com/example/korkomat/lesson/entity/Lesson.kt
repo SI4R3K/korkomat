@@ -7,6 +7,10 @@ import com.example.korkomat.lesson.exceptions.InvalidLessonStatusException
 import com.example.korkomat.user.entity.StudentProfile
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
@@ -18,26 +22,26 @@ import jakarta.persistence.Table
 @Table(name = "lesson")
 data class Lesson(
     @Id
-    @Column(name = "available_slot_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "lesson_status")
     var status: LessonStatus = LessonStatus.PENDING,
 
-    @ManyToOne
-    @JoinColumn(name = "tutor_subject_id")
-    var tutorSubject: TutorSubject? = null,
-
-    var place: String? = null,
-
     @OneToOne
-    @MapsId
     @JoinColumn(name = "available_slot_id")
     var slot: AvailableSlot,
 
     @ManyToOne
     @JoinColumn(name = "student_profile_id")
     var studentProfile: StudentProfile,
+
+    @ManyToOne
+    @JoinColumn(name = "tutor_subject_id")
+    var tutorSubject: TutorSubject? = null,
+
+    var place: String? = null,
 ){
     fun confirm() {
         if (status != LessonStatus.PENDING) {
@@ -50,13 +54,16 @@ data class Lesson(
     }
 
     fun reject() {
-        if (status != LessonStatus.PENDING) {
+        if (status == LessonStatus.REJECTED) {
             throw InvalidLessonStatusException(
-                "Lesson status has already been updated. Current status is $status."
+                "Lesson has already been rejected."
             )
         }
         status = LessonStatus.REJECTED
     }
+
+
+
 //    @Column(name="start_time")
 //    var startTime: Instant = Instant.now()
 //
