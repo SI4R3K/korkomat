@@ -14,23 +14,44 @@ The application is being developed as a portfolio project with the possibility o
 * **Spring Security**
 * **PostgreSQL**
 * **Gradle**
-* **JUnit / Testcontainers**
+* **Postman**
 * **Docker**
 
-## Project Status
+## Current Features
+The project has almost reached MVP-level functionality, with only a few features left to implement.
 
-🚧 **Work in Progress**
+- Authentication
+  - Users can register and authenticate in the application.
+  - Passwords are securely stored using password hashing.
+  - JWT-based authentication and refresh tokens are implemented.
+- User Profiles
+  - Users can create student or tutor profile.
+  - Available actions depend on the user's profile and assigned role.
+  - Basic administration features are available.
+- Subjects
+  - Administrators can manage available subjects.
+  - Tutors can add, edit and delete subjects they teach along with additional information.
+  - Students can browse tutors and view the subjects they offer.
+- Availability Slots
+   - Tutors can create, update, and delete their available slots.
+   - The system prevents creating invalid slots.
+   - Students can browse and filter available slots.
+   - Slot availability is automatically updated during the lesson booking process.
+- Lessons
+  - Students can book available lesson slots.
+  - The system prevents booking unavailable slots and detects scheduling conflicts.
+  - Booked lessons can be confirmed or rejected by the tutor.
+  - Lesson and slot statuses are updated according to the booking workflow.
+  - Students can freely cancel reservations until tutor's confirmation.
 
-The project is currently in the early development stage. The initial focus is on designing the domain model and implementing the core functionality of the MVP.
 
-## Planned MVP
-
-* User registration and authentication
-* Student and tutor profiles
-* Tutor availability management
-* Lesson scheduling
-* Student lesson registration
-* Basic lesson management
+## Upcoming Features
+- Email verification during registration
+- Automated testing
+- Lesson cancellation requests (after its confirmation)
+- Lesson rescheduling
+- Extended administration features
+- Frontend application
 
 ## Domain Model
 
