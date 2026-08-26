@@ -21,6 +21,11 @@ object Constant {
     const val AUTHENTICATION_FAILED = "User authentication failed."
     const val AUTH_ACCESS_DENIED = "Access denied for this [%s]."
 
+    // Confirmation token Errors
+    const val CONFIRMATION_TOKEN_NOT_FOUND = "The confirmation token not found."
+    const val CONFIRMATION_TOKEN_EXPIRED = "The confirmation token expired."
+    const val CONFIRMATION_TOKEN_ALREADY_CONFIRMED = "The confirmation token already confirmed."
+
     // JWT Token Errors
     const val JWT_MALFORMED = "The JWT token is malformed."
     const val JWT_EXPIRED = "The JWT token has expired."

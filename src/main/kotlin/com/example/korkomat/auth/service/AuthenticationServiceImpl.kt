@@ -6,7 +6,10 @@ import com.example.korkomat.auth.dto.request.RegisterRequest
 import com.example.korkomat.auth.dto.request.TokenRefreshRequest
 import com.example.korkomat.auth.dto.response.LoginResponse
 import com.example.korkomat.auth.dto.response.LogoutResponse
+import com.example.korkomat.auth.dto.response.RegistrationResponse
 import com.example.korkomat.auth.dto.response.TokenRefreshResponse
+import com.example.korkomat.auth.email.service.EmailService
+import com.example.korkomat.auth.entity.ConfirmationToken
 import com.example.korkomat.auth.exceptions.RefreshTokenNotFoundExcpetion
 import com.example.korkomat.auth.exceptions.UnauthenticatedUserException
 import com.example.korkomat.auth.exceptions.UserAlreadyExistsException
@@ -21,6 +24,8 @@ import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
+import java.time.Instant
+import java.util.UUID
 
 @Service
 class AuthenticationServiceImpl(
@@ -29,27 +34,69 @@ class AuthenticationServiceImpl(
     private val jwtService: JwtService,
     private val refreshTokenService: RefreshTokenService,
     private val refreshTokenRepository: RefreshTokenRepository,
+    private val confirmationTokenService: ConfirmationTokenService,
+    private val emailService: EmailService,
 ): AuthenticationService {
 
     @Transactional
-    override fun registerUser(request: RegisterRequest): String {
-        if (userRepository.existsByEmail(request.email)) {
-            throw UserAlreadyExistsException(
-                String.format(Constant.USER_ALREADY_EXISTS, request.email)
+    override fun registerUser(
+        request: RegisterRequest
+    ): RegistrationResponse {
+
+        val existingUser = userRepository.findByEmail(request.email)
+
+        if (existingUser != null) {
+            if (existingUser.isActive) {
+                throw UserAlreadyExistsException(
+                    String.format(
+                        Constant.USER_ALREADY_EXISTS,
+                        request.email
+                    )
+                )
+            }
+            val confirmationToken =
+                confirmationTokenService
+                    .createOrRenewConfirmationToken(existingUser)
+
+            emailService.sendVerificationEmail(
+                existingUser.email,
+                confirmationToken.token
+            )
+
+            return RegistrationResponse(
+                "Verification e-mail sent again. Please check your inbox ${existingUser.email}."
             )
         }
 
-        requireNotNull(request.password) { "Password must not be null" }
-        val passwordHash = User.encryptPassword(request.password)
+        requireNotNull(request.password) {
+            "Password must not be null"
+        }
 
         val user = User(
             firstName = request.firstName,
             lastName = request.lastName,
             email = request.email,
-            password = passwordHash,
+            password = User.encryptPassword(request.password)
         )
-        userRepository.save(user)
-        return "Zarejestrowano użytkownika o ID: ${user.id}"
+
+        val savedUser = userRepository.save(user)
+
+        val confirmationToken =
+            confirmationTokenService
+                .createOrRenewConfirmationToken(savedUser)
+
+         emailService.sendVerificationEmail(
+             savedUser.email,
+             confirmationToken.token
+         )
+
+        return RegistrationResponse(
+            "Verification e-mail sent. Please check your inbox ${savedUser.email}."
+        )
+    }
+
+    override fun confirmUser(confirmationToken: String) {
+        confirmationTokenService.validateConfirmationToken(confirmationToken)
     }
 
     @Transactional

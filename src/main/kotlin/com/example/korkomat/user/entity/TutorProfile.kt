@@ -18,7 +18,7 @@ import java.math.BigDecimal
 import java.util.UUID
 
 @Entity
-@Table(name = "tutor_profile")
+@Table(name = "tutor_profiles")
 data class TutorProfile(
 
     @Id

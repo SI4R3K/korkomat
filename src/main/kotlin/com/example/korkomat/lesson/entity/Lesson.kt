@@ -19,7 +19,7 @@ import jakarta.persistence.OneToOne
 import jakarta.persistence.Table
 
 @Entity
-@Table(name = "lesson")
+@Table(name = "lessons")
 data class Lesson(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

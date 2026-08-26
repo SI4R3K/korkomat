@@ -13,7 +13,7 @@ import jakarta.persistence.Table
 import java.util.UUID
 
 @Entity
-@Table(name = "student_profile")
+@Table(name = "student_profiles")
 data class StudentProfile(
 
     @Id

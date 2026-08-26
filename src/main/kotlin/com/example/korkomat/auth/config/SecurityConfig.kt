@@ -37,8 +37,8 @@ class SecurityConfig(
             "/auth/register",
             "/auth/forgot-password",
             "/auth/reset-password",
-            "/auth/validate-password/**",
-            "/auth/refreshtoken",
+            "/auth/verify",
+            "/auth/refresh-token",
         )
     }
 
