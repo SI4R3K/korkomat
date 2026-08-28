@@ -22,7 +22,9 @@ The project has almost reached MVP-level functionality, with only a few features
 
 - Authentication
   - Users can register and authenticate in the application.
+  - Email verification during registration
   - Passwords are securely stored using password hashing.
+  - Forgot password via email confirmation
   - JWT-based authentication and refresh tokens are implemented.
 - User Profiles
   - Users can create student or tutor profile.
@@ -46,7 +48,6 @@ The project has almost reached MVP-level functionality, with only a few features
 
 
 ## Upcoming Features
-- Email verification during registration
 - Automated testing
 - Lesson cancellation requests (after its confirmation)
 - Lesson rescheduling
