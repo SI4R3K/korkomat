@@ -22,9 +22,10 @@ object Constant {
     const val AUTH_ACCESS_DENIED = "Access denied for this [%s]."
 
     // Confirmation token Errors
-    const val CONFIRMATION_TOKEN_NOT_FOUND = "The confirmation token not found."
-    const val CONFIRMATION_TOKEN_EXPIRED = "The confirmation token expired."
-    const val CONFIRMATION_TOKEN_ALREADY_CONFIRMED = "The confirmation token already confirmed."
+    const val VERIFICATION_TOKEN_NOT_FOUND = "The confirmation token not found."
+    const val VERIFICATION_TOKEN_EXPIRED = "The confirmation token expired."
+    const val VERIFICATION_TOKEN_ALREADY_CONFIRMED = "The confirmation token already confirmed."
+    const val VERIFICATION_TOKEN_ALREADY_USED = "The token has already been used."
 
     // JWT Token Errors
     const val JWT_MALFORMED = "The JWT token is malformed."

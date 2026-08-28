@@ -9,7 +9,7 @@ import com.example.korkomat.auth.dto.response.LogoutResponse
 import com.example.korkomat.auth.dto.response.RegistrationResponse
 import com.example.korkomat.auth.dto.response.TokenRefreshResponse
 import com.example.korkomat.auth.email.service.EmailService
-import com.example.korkomat.auth.entity.ConfirmationToken
+import com.example.korkomat.auth.entity.enumeration.VerificationTokenType
 import com.example.korkomat.auth.exceptions.RefreshTokenNotFoundExcpetion
 import com.example.korkomat.auth.exceptions.UnauthenticatedUserException
 import com.example.korkomat.auth.exceptions.UserAlreadyExistsException
@@ -24,8 +24,6 @@ import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
-import java.time.Instant
-import java.util.UUID
 
 @Service
 class AuthenticationServiceImpl(
@@ -34,7 +32,7 @@ class AuthenticationServiceImpl(
     private val jwtService: JwtService,
     private val refreshTokenService: RefreshTokenService,
     private val refreshTokenRepository: RefreshTokenRepository,
-    private val confirmationTokenService: ConfirmationTokenService,
+    private val verificationTokenService: VerificationTokenService,
     private val emailService: EmailService,
 ): AuthenticationService {
 
@@ -55,8 +53,10 @@ class AuthenticationServiceImpl(
                 )
             }
             val confirmationToken =
-                confirmationTokenService
-                    .createOrRenewConfirmationToken(existingUser)
+                verificationTokenService
+                    .createOrRenewVerificationToken(
+                        existingUser,
+                        VerificationTokenType.EMAIL_CONFIRMATION)
 
             emailService.sendVerificationEmail(
                 existingUser.email,
@@ -82,8 +82,10 @@ class AuthenticationServiceImpl(
         val savedUser = userRepository.save(user)
 
         val confirmationToken =
-            confirmationTokenService
-                .createOrRenewConfirmationToken(savedUser)
+            verificationTokenService
+                .createOrRenewVerificationToken(
+                    savedUser,
+                    VerificationTokenType.EMAIL_CONFIRMATION)
 
          emailService.sendVerificationEmail(
              savedUser.email,
@@ -95,8 +97,15 @@ class AuthenticationServiceImpl(
         )
     }
 
+    @Transactional
     override fun confirmUser(confirmationToken: String) {
-        confirmationTokenService.validateConfirmationToken(confirmationToken)
+        val verificationToken =
+        verificationTokenService.validateVerificationToken(
+            confirmationToken,
+            VerificationTokenType.EMAIL_CONFIRMATION
+        )
+
+        verificationToken.user.isActive = true
     }
 
     @Transactional
@@ -161,5 +170,39 @@ class AuthenticationServiceImpl(
         )
 
         return LogoutResponse("Log out successful")
+    }
+
+    @Transactional
+    override fun forgotPassword(email: String) {
+
+        val user = userRepository.findByEmail(email)
+            ?: return
+
+        val resetToken = verificationTokenService
+            .createOrRenewVerificationToken(
+                user,
+            VerificationTokenType.PASSWORD_RESET
+            )
+
+        emailService.sendForgotPasswordEmail(
+            email,
+            resetToken.token
+        )
+    }
+
+    @Transactional
+    override fun resetPassword(
+        token: String,
+        password: String
+    ) {
+        val verificationToken =
+            verificationTokenService.validateVerificationToken(
+                token,
+                VerificationTokenType.PASSWORD_RESET
+            )
+
+        val user = verificationToken.user
+
+        user.setPassword(password)
     }
 }

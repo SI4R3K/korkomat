@@ -1,16 +1,16 @@
 package com.example.korkomat.auth.controller
 
+import com.example.korkomat.auth.dto.request.ForgotPasswordRequest
 import com.example.korkomat.auth.dto.request.LoginRequest
 import com.example.korkomat.auth.dto.request.LogoutRequest
 import com.example.korkomat.auth.dto.request.RegisterRequest
+import com.example.korkomat.auth.dto.request.ResetPasswordRequest
 import com.example.korkomat.auth.dto.request.TokenRefreshRequest
 import com.example.korkomat.auth.dto.response.LoginResponse
 import com.example.korkomat.auth.dto.response.LogoutResponse
 import com.example.korkomat.auth.dto.response.RegistrationResponse
 import com.example.korkomat.auth.dto.response.TokenRefreshResponse
-import com.example.korkomat.auth.entity.ConfirmationToken
 import com.example.korkomat.auth.service.AuthenticationService
-import com.example.korkomat.auth.service.JwtService
 import com.example.korkomat.common.dto.response.Api
 import org.springframework.http.ResponseEntity
 import org.springframework.http.HttpStatus
@@ -58,6 +58,27 @@ class AuthController(
     fun verifyEmail(@RequestParam token: String): ResponseEntity<Api<Unit>> {
         val verifyResponse = authService.confirmUser(token)
         val successResponse = Api.ok(verifyResponse, "Confirm successful")
+        return ResponseEntity.status(HttpStatus.OK).body(successResponse)
+    }
+
+    @PostMapping("forgot-password")
+    fun forgotPassword(
+        @RequestBody request: ForgotPasswordRequest
+    ): ResponseEntity<Api<Unit>> {
+        val forgotPasswordResponse = authService.forgotPassword(request.email)
+        val successResponse = Api.ok(
+            forgotPasswordResponse,
+            "If an account with this email exists, a reset link has been sent."
+        )
+        return ResponseEntity.status(HttpStatus.OK).body(successResponse)
+    }
+
+    @PostMapping("reset-password")
+    fun resetPassword(
+        @RequestBody request: ResetPasswordRequest
+    ): ResponseEntity<Api<Unit>> {
+        val resetPasswordResponse = authService.resetPassword(request.token, request.password)
+        val successResponse = Api.ok(resetPasswordResponse, "Password has been changed. You can now login")
         return ResponseEntity.status(HttpStatus.OK).body(successResponse)
     }
 }

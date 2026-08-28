@@ -2,13 +2,6 @@ package com.example.korkomat.user
 
 import com.example.korkomat.auth.dto.response.LoginResponse
 import com.example.korkomat.auth.dto.response.TokenRefreshResponse
-import com.example.korkomat.auth.entity.ConfirmationToken
-import com.example.korkomat.auth.service.ConfirmationTokenService
-import com.example.korkomat.common.constant.Constant
-import com.example.korkomat.user.entity.User
-import com.example.korkomat.user.repository.UserRepository
-import org.springframework.security.core.userdetails.UsernameNotFoundException
-import java.time.Instant
 
 object UserUtil {
     fun tokensToLoginResponse(

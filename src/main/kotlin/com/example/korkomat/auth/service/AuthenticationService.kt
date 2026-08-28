@@ -15,4 +15,6 @@ interface AuthenticationService {
     fun confirmUser(confirmationToken: String)
     fun refreshAccessToken(request: TokenRefreshRequest): TokenRefreshResponse
     fun logout(request: LogoutRequest): LogoutResponse
+    fun forgotPassword(email: String)
+    fun resetPassword(token: String, password: String)
 }
