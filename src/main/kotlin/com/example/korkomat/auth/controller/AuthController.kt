@@ -46,7 +46,6 @@ class AuthController(
         val successResponse = Api.ok(tokenRefreshResponse, "Refresh successful")
         return ResponseEntity.status(HttpStatus.OK).body(successResponse)
     }
-
     @PostMapping("logout")
     fun logout(@RequestBody request: LogoutRequest): ResponseEntity<Api<LogoutResponse>> {
         val logoutResponse = authService.logout(request)
