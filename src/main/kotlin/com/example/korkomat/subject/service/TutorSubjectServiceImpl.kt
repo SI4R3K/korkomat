@@ -6,10 +6,13 @@ import com.example.korkomat.subject.dto.request.CreateTutorSubjectRequest
 import com.example.korkomat.subject.dto.request.UpdateTutorSubjectRequest
 import com.example.korkomat.subject.dto.response.CreateTutorSubjectResponse
 import com.example.korkomat.subject.dto.response.DeleteTutorSubjectResponse
+import com.example.korkomat.subject.dto.response.GetSubjectsResponse
 import com.example.korkomat.subject.dto.response.StudentTutorSubjectsResponse
+import com.example.korkomat.subject.dto.response.SubjectResponse
 import com.example.korkomat.subject.dto.response.TutorSubjectDetailsResponse
 import com.example.korkomat.subject.dto.response.TutorSubjectsResponse
 import com.example.korkomat.subject.dto.response.UpdateTutorSubjectResponse
+import com.example.korkomat.subject.entity.Subject
 import com.example.korkomat.subject.entity.TutorSubject
 import com.example.korkomat.subject.excpeptions.SubjectAlreadyExistsException
 import com.example.korkomat.subject.excpeptions.SubjectDoesNotExistException
@@ -153,6 +156,15 @@ class TutorSubjectServiceImpl(
         )
     }
 
+    @Transactional(readOnly = true)
+    override fun getSubjects(): GetSubjectsResponse {
+        currentProfileService.requireCurrentUserToBeTutor()
+
+        return GetSubjectsResponse(
+            subjectRepository.findAll().map { it.toSubjectResponse() }
+        )
+    }
+
     private fun getCurrentTutorSubject(id: Long): TutorSubject {
         val tutor = currentProfileService.getCurrentTutor()
         return findTutorSubjectForTutor(id, tutor)
@@ -161,5 +173,12 @@ class TutorSubjectServiceImpl(
     private fun findTutorSubjectForTutor(id: Long, tutor: TutorProfile): TutorSubject {
         return tutorSubjectRepository.findByIdAndTutorId(id, requireNotNull(tutor.id))
             ?: throw TutorSubjectDoesNotExistException("Tutor subject with this [$id] does not exist.")
+    }
+
+    private fun Subject.toSubjectResponse(): SubjectResponse {
+        return SubjectResponse(
+            id = id,
+            name = name,
+        )
     }
 }

@@ -5,6 +5,7 @@ import com.example.korkomat.subject.dto.request.CreateTutorSubjectRequest
 import com.example.korkomat.subject.dto.request.UpdateTutorSubjectRequest
 import com.example.korkomat.subject.dto.response.CreateTutorSubjectResponse
 import com.example.korkomat.subject.dto.response.DeleteTutorSubjectResponse
+import com.example.korkomat.subject.dto.response.GetSubjectsResponse
 import com.example.korkomat.subject.dto.response.TutorSubjectDetailsResponse
 import com.example.korkomat.subject.dto.response.TutorSubjectsResponse
 import com.example.korkomat.subject.dto.response.UpdateTutorSubjectResponse
@@ -36,6 +37,13 @@ class TutorSubjectController(
     }
 
     @GetMapping
+    fun getSubjects(): ResponseEntity<Api<GetSubjectsResponse>> {
+        val response = tutorSubjectService.getSubjects()
+        val successResponse = Api.ok(response, "All subjects retrieved successfully!")
+        return ResponseEntity.status(HttpStatus.OK).body(successResponse)
+    }
+
+    @GetMapping("/my")
     fun getMyTutorSubjects(): ResponseEntity<Api<TutorSubjectsResponse>> {
         val response = tutorSubjectService.getMyTutorSubjects()
         return ResponseEntity.status(HttpStatus.OK)
