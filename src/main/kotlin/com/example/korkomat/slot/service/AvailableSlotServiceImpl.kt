@@ -177,6 +177,7 @@ class AvailableSlotServiceImpl(
     private fun AvailableSlot.toAllAvailableSlotResponse(): SearchAvailableSlotsResponse {
         return SearchAvailableSlotsResponse(
             slotId = id,
+            tutorProfileId = tutorProfile?.id,
             tutorName = tutorProfile?.user?.getFullName(),
             startTime = startTime,
             endTime = endTime,

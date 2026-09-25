@@ -3,6 +3,7 @@ package com.example.korkomat.slot.dto.response
 import com.example.korkomat.lesson.entity.enumeration.LessonType
 import com.example.korkomat.slot.entity.enumeration.SlotStatus
 import java.time.Instant
+import java.util.UUID
 
 data class AvailableSlotsResponse(
     val availableSlots: List<AvailableSlotResponse>
@@ -33,6 +34,7 @@ data class AvailableSlotResponse(
 
 data class SearchAvailableSlotsResponse(
     val slotId: Long?,
+    val tutorProfileId: UUID?,
     val tutorName: String?,
     val startTime: Instant,
     val endTime: Instant,
