@@ -11,6 +11,7 @@ fun Lesson.toStudentLessonResponse(): StudentLessonResponse {
         startTime = slot.startTime,
         endTime = slot.endTime,
         place = place,
+        format = slot.type,
         subjectName = tutorSubject?.subject?.name,
         tutorName = tutorSubject?.tutor?.user?.getFullName()
     )
@@ -23,6 +24,7 @@ fun Lesson.toTutorLessonResponse(): TutorLessonResponse {
         startTime = slot.startTime,
         endTime = slot.endTime,
         place = place,
+        format = slot.type,
         subjectName = tutorSubject?.subject?.name,
         level = tutorSubject?.level,
         studentName = studentProfile.user.getFullName(),

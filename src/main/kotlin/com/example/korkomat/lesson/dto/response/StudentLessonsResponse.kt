@@ -1,6 +1,7 @@
 package com.example.korkomat.lesson.dto.response
 
 import com.example.korkomat.lesson.entity.enumeration.LessonStatus
+import com.example.korkomat.lesson.entity.enumeration.LessonType
 import com.example.korkomat.subject.entity.enumeration.SubjectLevel
 import java.time.Instant
 
@@ -22,6 +23,7 @@ sealed interface LessonResponse {
     val startTime: Instant
     val endTime: Instant
     val place: String?
+    val format: LessonType?
     val subjectName: String?
 }
 
@@ -31,6 +33,7 @@ data class StudentLessonResponse(
     override val startTime: Instant,
     override val endTime: Instant,
     override val place: String?,
+    override val format: LessonType?,
     override val subjectName: String?,
     val tutorName: String?
 ): LessonResponse
@@ -41,8 +44,8 @@ data class TutorLessonResponse(
     override val startTime: Instant,
     override val endTime: Instant,
     override val place: String?,
+    override val format: LessonType?,
     override val subjectName: String?,
     val level: SubjectLevel?,
     val studentName: String,
 ): LessonResponse
-

@@ -46,11 +46,6 @@ class LessonServiceImpl(
         return GetLessonsResponse(
             lessons = lessonRepository
                 .findAllByStatusAndTutorProfileId(filter.status, tutor.id)
-                .ifEmpty {
-                    throw NoLessonsException(
-                        "Tutor ${tutor.id} has no lessons with status ${filter.status}."
-                    )
-                }
                 .map {
                     it.toTutorLessonResponse()
                 }
