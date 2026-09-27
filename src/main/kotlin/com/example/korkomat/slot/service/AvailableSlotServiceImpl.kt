@@ -125,7 +125,7 @@ class AvailableSlotServiceImpl(
 
         return AvailableSlotsResponse(
             availableSlotRepository
-                .findByTutorProfileAndStartTimeGreaterThanEqual(tutor)
+                .findByTutorProfileAndStartTimeGreaterThanEqualAndIsAvailableTrue(tutor)
                 .map { it.toAvailableSlotResponse() }
         )
     }

@@ -44,6 +44,9 @@ data class AvailableSlot(
     @Column(name="end_time")
     var endTime: Instant = Instant.now(),
 
+    @Column(name="is_available")
+    var isAvailable: Boolean = true,
+
     @OneToOne(mappedBy = "slot", cascade = [CascadeType.ALL], orphanRemoval = true)
     var lesson: Lesson? = null,
     ) {
@@ -52,6 +55,7 @@ data class AvailableSlot(
         if (slotStatus == SlotStatus.AVAILABLE) {
             slotStatus = SlotStatus.RESERVED
             lesson = lessonToReserve
+            isAvailable = false
         } else {
             throw SlotUnavailableException(
                 String.format(
@@ -78,6 +82,7 @@ data class AvailableSlot(
         if (slotStatus != SlotStatus.AVAILABLE) {
             slotStatus = SlotStatus.AVAILABLE
             lesson = null
+            isAvailable = true
         } else {
             throw SlotUnavailableException(
                 "Slot is already available."
