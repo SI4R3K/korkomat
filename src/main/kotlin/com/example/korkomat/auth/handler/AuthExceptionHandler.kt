@@ -1,6 +1,8 @@
 package com.example.korkomat.auth.handler
 
+import com.example.korkomat.auth.dto.response.RegistrationResponse
 import com.example.korkomat.auth.exceptions.ForbiddenAccessException
+import com.example.korkomat.auth.exceptions.InactiveUserException
 import com.example.korkomat.auth.exceptions.RefreshTokenExpiredException
 import com.example.korkomat.auth.exceptions.UserAlreadyExistsException
 import com.example.korkomat.common.constant.Constant
@@ -18,6 +20,19 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 
 @RestControllerAdvice
 class AuthExceptionHandler {
+
+    @ExceptionHandler(InactiveUserException::class)
+    fun handleInactiveUserException(
+        e: InactiveUserException
+    ): ResponseEntity<Api<Any>> {
+        val errorResponse = error<Any>(
+            message = e.message ?: Constant.USER_NOT_ACTIVE,
+            errorStatus = ErrorStatus.CONFLICT,
+        )
+        return ResponseEntity
+            .status(HttpStatus.CONFLICT)
+            .body(errorResponse)
+    }
 
     @ExceptionHandler(UserAlreadyExistsException::class)
     fun handleUserAlreadyExistsException(e: UserAlreadyExistsException): ResponseEntity<Api<Any>> {

@@ -10,6 +10,7 @@ import com.example.korkomat.auth.dto.response.RegistrationResponse
 import com.example.korkomat.auth.dto.response.TokenRefreshResponse
 import com.example.korkomat.auth.email.service.EmailService
 import com.example.korkomat.auth.entity.enumeration.VerificationTokenType
+import com.example.korkomat.auth.exceptions.InactiveUserException
 import com.example.korkomat.auth.exceptions.RefreshTokenNotFoundExcpetion
 import com.example.korkomat.auth.exceptions.UnauthenticatedUserException
 import com.example.korkomat.auth.exceptions.UserAlreadyExistsException
@@ -110,24 +111,30 @@ class AuthenticationServiceImpl(
 
     @Transactional
     override fun loginUser(request: LoginRequest): LoginResponse {
-        if (
-            !userRepository.existsByEmail(
-                requireNotNull(request.email) {"Email must not be null"})
-        ) {
-            throw UsernameNotFoundException(String.format(Constant.USER_NOT_FOUND, request.email))
+
+        val email = requireNotNull(request.email) {
+            "Email must not be null"
+        }
+
+        val user = userRepository.findByEmail(email)
+            ?: throw UsernameNotFoundException(
+                String.format(Constant.USER_NOT_FOUND, email)
+            )
+
+        if (!user.isActive) {
+            throw InactiveUserException(Constant.USER_NOT_ACTIVE)
         }
 
         val authentication = authenticationManager.authenticate(
-            UsernamePasswordAuthenticationToken(request.email, request.password)
+            UsernamePasswordAuthenticationToken(
+                request.email,
+                request.password
+            )
         )
 
         if (!authentication.isAuthenticated) {
             throw UnauthenticatedUserException(Constant.AUTHENTICATION_FAILED)
         }
-
-        val principal = authentication.principal as org.springframework.security.core.userdetails.User
-        val user = userRepository.findByEmail(principal.username)
-            ?: throw UsernameNotFoundException(String.format(Constant.USER_NOT_FOUND, principal.username))
 
         val claims = mapOf("roles" to user.role)
         val accessToken = jwtService.generateToken(claims, user)
@@ -136,7 +143,13 @@ class AuthenticationServiceImpl(
         val rawToken = refreshTokenService.generateRawRefreshToken()
 
         refreshTokenService.saveRefreshToken(rawToken, user)
-        return UserUtil.tokensToLoginResponse(expiresIn, accessToken, tokenType, rawToken)
+
+        return UserUtil.tokensToLoginResponse(
+            expiresIn,
+            accessToken,
+            tokenType,
+            rawToken
+        )
     }
 
     @Transactional(dontRollbackOn = [RefreshTokenExpiredException::class])

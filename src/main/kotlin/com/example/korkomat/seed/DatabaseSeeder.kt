@@ -77,6 +77,7 @@ class DatabaseSeeder(
                 password = User.encryptPassword(
                     seedStudent.password
                 ),
+                isActive = true,
                 firstName = seedStudent.firstName,
                 lastName = seedStudent.lastName,
                 role = Role.USER
@@ -102,6 +103,7 @@ class DatabaseSeeder(
                 password = User.encryptPassword(
                     seedTutor.password
                 ),
+                isActive = true,
                 firstName = seedTutor.firstName,
                 lastName = seedTutor.lastName,
                 role = Role.USER
