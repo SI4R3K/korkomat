@@ -13,6 +13,10 @@ class EmailService(
 
     @Value("spring.mail.username")
     private val from: String,
+
+    @Value("\${app.frontEndUrl}")
+    private val frontendUrl: String
+
 ) {
     fun sendVerificationEmail(email: String, token: String) {
         val subject: String = "Email verification"
@@ -23,7 +27,7 @@ class EmailService(
 
     fun sendForgotPasswordEmail(email: String, token: String) {
         val subject: String = "Password Reset Request"
-        val path: String = "/reset-password"
+        val path: String = "auth/reset-password"
         val message = "Click the button below to reset your password."
         sendEmail(email, token, subject, path, message)
     }
@@ -36,7 +40,9 @@ class EmailService(
         message: String
     ) {
         try {
-            val actionUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
+
+            val actionUrl = ServletUriComponentsBuilder
+                .fromUriString(frontendUrl)
                 .path(path)
                 .queryParam("token", token)
                 .toUriString()

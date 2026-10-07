@@ -41,3 +41,5 @@ app:
             password: ${ADMIN_PASSWORD:admin123}
             first-name: ${ADMIN_FIRST_NAME:Admin}
             last-name: ${ADMIN_LAST_NAME:Korkomat}
+
+    frontEndUrl: http://localhost:5173
