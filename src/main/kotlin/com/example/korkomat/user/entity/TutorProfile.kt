@@ -26,10 +26,10 @@ data class TutorProfile(
     val id: UUID? = null,
 
     @Column(length = 1000)
-    val bio: String,
+    var bio: String,
 
     @Column(nullable = false)
-    val hourlyRate: BigDecimal,
+    var hourlyRate: BigDecimal,
 
     @OneToMany(
         mappedBy = "tutor",

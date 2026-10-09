@@ -1,6 +1,5 @@
 package com.example.korkomat.user.service
 
-import com.example.korkomat.auth.service.CurrentProfileService
 import com.example.korkomat.auth.service.CurrentUserProvider
 import com.example.korkomat.user.dto.request.RegisterStudentRequest
 import com.example.korkomat.user.dto.request.RegisterTutorRequest
@@ -16,7 +15,7 @@ import org.springframework.stereotype.Service
 @Service
 class UserServiceImpl(
     private val studentProfileService: StudentProfileService,
-    private val tutorProfileService: TutorProfileService,
+    private val tutorProfileService: TutorProfileServiceImpl,
     private val currentUserProvider: CurrentUserProvider,
     private val studentRepository: StudentRepository,
     private val tutorRepository: TutorRepository
@@ -52,7 +51,9 @@ class UserServiceImpl(
 
             tutorProfile = tutor?.let {
                 TutorProfileResponse(
-                    id = it.id
+                    id = it.id,
+                    bio = it.bio,
+                    hourlyRate = it.hourlyRate,
                 )
             }
         )

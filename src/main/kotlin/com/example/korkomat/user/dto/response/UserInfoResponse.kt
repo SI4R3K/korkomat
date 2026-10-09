@@ -1,5 +1,6 @@
 package com.example.korkomat.user.dto.response
 
+import java.math.BigDecimal
 import java.util.UUID
 
 data class UserInfoResponse(
@@ -16,4 +17,6 @@ data class StudentProfileResponse(
 
 data class TutorProfileResponse(
     val id: UUID?,
+    val bio: String,
+    val hourlyRate: BigDecimal,
 )
