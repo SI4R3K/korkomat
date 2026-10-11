@@ -113,7 +113,7 @@ class DatabaseSeeder(
                 TutorProfile(
                     user = savedUser,
                     bio = seedTutor.bio,
-                    hourlyRate = seedTutor.hourlyRate
+                    hourlyRate = seedTutor.hourlyRate,
                 )
             )
 

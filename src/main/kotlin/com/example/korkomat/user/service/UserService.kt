@@ -1,6 +1,7 @@
 package com.example.korkomat.user.service
 
 import com.example.korkomat.auth.exceptions.UnauthenticatedUserException
+import com.example.korkomat.user.dto.request.EditMyProfileRequest
 import com.example.korkomat.user.dto.request.RegisterStudentRequest
 import com.example.korkomat.user.dto.request.RegisterTutorRequest
 import com.example.korkomat.user.dto.response.RegisterStudentResponse
@@ -17,4 +18,5 @@ interface UserService {
     fun registerTutor(request: RegisterTutorRequest): RegisterTutorResponse
     fun registerStudent(request: RegisterStudentRequest): RegisterStudentResponse
     fun getCurrentUserInfo(): UserInfoResponse
+    fun editCurrentUserInfo(request: EditMyProfileRequest)
 }

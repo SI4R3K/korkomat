@@ -1,6 +1,7 @@
 package com.example.korkomat.user.service
 
 import com.example.korkomat.auth.service.CurrentUserProvider
+import com.example.korkomat.user.dto.request.EditMyProfileRequest
 import com.example.korkomat.user.dto.request.RegisterStudentRequest
 import com.example.korkomat.user.dto.request.RegisterTutorRequest
 import com.example.korkomat.user.dto.response.RegisterStudentResponse
@@ -10,7 +11,9 @@ import com.example.korkomat.user.dto.response.TutorProfileResponse
 import com.example.korkomat.user.dto.response.UserInfoResponse
 import com.example.korkomat.user.repository.StudentRepository
 import com.example.korkomat.user.repository.TutorRepository
+import com.example.korkomat.user.repository.UserRepository
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class UserServiceImpl(
@@ -18,7 +21,8 @@ class UserServiceImpl(
     private val tutorProfileService: TutorProfileServiceImpl,
     private val currentUserProvider: CurrentUserProvider,
     private val studentRepository: StudentRepository,
-    private val tutorRepository: TutorRepository
+    private val tutorRepository: TutorRepository,
+    private val userRepository: UserRepository
     ): UserService {
 
     override fun registerTutor(request: RegisterTutorRequest): RegisterTutorResponse {
@@ -41,6 +45,8 @@ class UserServiceImpl(
         return UserInfoResponse(
             id = user.id,
             email = user.email,
+            phoneNumber = user.phoneNumber,
+            location = user.location,
             fullName = user.getFullName(),
 
             studentProfile = student?.let {
@@ -53,10 +59,21 @@ class UserServiceImpl(
                 TutorProfileResponse(
                     id = it.id,
                     bio = it.bio,
-                    hourlyRate = it.hourlyRate,
+                    hourlyRate = it.hourlyRate
                 )
             }
         )
     }
 
+    @Transactional
+    override fun editCurrentUserInfo(request: EditMyProfileRequest) {
+        val user = currentUserProvider.getCurrentUser()
+
+        request.newFirstName?.let { user.firstName = it }
+        request.newLastName?.let { user.lastName = it }
+        request.newPhoneNumber?.let { user.phoneNumber = it }
+        request.newLocation?.let { user.location = it }
+
+        userRepository.save(user)
+    }
 }

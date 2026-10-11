@@ -36,6 +36,12 @@ data class User(
     @Column(name = "last_name", nullable = false)
     var lastName: String,
 
+    @Column(name = "phone_number", nullable = true)
+    var phoneNumber: String? = null,
+
+    @Column(nullable = true)
+    var location: String? = null,
+
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     var role: Role = Role.USER,

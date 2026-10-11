@@ -7,6 +7,8 @@ data class UserInfoResponse(
     val id: UUID?,
     val email: String,
     val fullName: String,
+    val phoneNumber: String?,
+    val location: String?,
     val studentProfile: StudentProfileResponse? = null,
     val tutorProfile: TutorProfileResponse? = null,
 )

@@ -2,6 +2,7 @@ package com.example.korkomat.user.controller
 
 import com.example.korkomat.auth.dto.response.LoginResponse
 import com.example.korkomat.common.dto.response.Api
+import com.example.korkomat.user.dto.request.EditMyProfileRequest
 import com.example.korkomat.user.dto.request.RegisterStudentRequest
 import com.example.korkomat.user.dto.request.RegisterTutorRequest
 import com.example.korkomat.user.dto.response.RegisterStudentResponse
@@ -40,6 +41,15 @@ class UserController(
     fun getUserInfo(): ResponseEntity<Api<UserInfoResponse>> {
         val userInfoResponse = userService.getCurrentUserInfo()
         val successResponse = Api.ok(userInfoResponse, "User info retrieved successfully!")
+        return ResponseEntity.status(HttpStatus.OK).body(successResponse)
+    }
+
+    @PostMapping("/profile/edit")
+    fun editMyProfile(
+        @RequestBody request: EditMyProfileRequest
+    ): ResponseEntity<Api<String>> {
+        userService.editCurrentUserInfo(request)
+        val successResponse = Api.ok("Profile profile updated successfully!")
         return ResponseEntity.status(HttpStatus.OK).body(successResponse)
     }
 }
