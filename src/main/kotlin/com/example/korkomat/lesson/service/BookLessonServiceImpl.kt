@@ -80,6 +80,7 @@ class BookLessonServiceImpl(
             studentProfile = student,
             tutorSubject = tutorSubject,
             place = request.place,
+            note = request.note,
             )
 
         lessonRepository.save(lesson)

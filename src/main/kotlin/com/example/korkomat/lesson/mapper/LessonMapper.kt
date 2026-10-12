@@ -13,6 +13,7 @@ fun Lesson.toStudentLessonResponse(): StudentLessonResponse {
         place = place,
         format = slot.type,
         subjectName = tutorSubject?.subject?.name,
+        level = tutorSubject?.level,
         tutorName = tutorSubject?.tutor?.user?.getFullName()
     )
 }
@@ -28,5 +29,6 @@ fun Lesson.toTutorLessonResponse(): TutorLessonResponse {
         subjectName = tutorSubject?.subject?.name,
         level = tutorSubject?.level,
         studentName = studentProfile.user.getFullName(),
+        note = note,
     )
 }

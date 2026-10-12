@@ -8,9 +8,23 @@
     },
     {
       "name": "Jezyk angielski"
+    },
+    {
+      "name": "Jezyk polski"
+    },
+    {
+      "name": "Informatyka"
+    },
+    {
+      "name": "Chemia"
+    },
+    {
+      "name": "Biologia"
+    },
+    {
+      "name": "Jezyk niemiecki"
     }
   ],
-
   "students": [
     {
       "email": "mark@korkomat.pl",
@@ -23,59 +37,409 @@
       "password": "emma123",
       "firstName": "Emma",
       "lastName": "BigTit"
+    },
+    {
+      "email": "jan@korkomat.pl",
+      "password": "jan123",
+      "firstName": "Jan",
+      "lastName": "Kowalski"
+    },
+    {
+      "email": "anna@korkomat.pl",
+      "password": "anna123",
+      "firstName": "Anna",
+      "lastName": "Nowak"
+    },
+    {
+      "email": "piotr@korkomat.pl",
+      "password": "piotr123",
+      "firstName": "Piotr",
+      "lastName": "Wisniewski"
+    },
+    {
+      "email": "zofia@korkomat.pl",
+      "password": "zofia123",
+      "firstName": "Zofia",
+      "lastName": "Kaminska"
     }
   ],
-
   "tutors": [
     {
-      "email": "bob@korkomat.pl",
-      "password": "bob123",
-      "firstName": "Bob",
-      "lastName": "BigBalls",
-
-      "bio": "Nauczyciel matematyki i fizyki z kilkuletnim doświadczeniem.",
-      "hourlyRate": 80.00,
-
-      "subjects": [
-        {
-          "name": "Matematyka",
-          "level": "MATURA_EXAM",
-          "description": "Przygotowanie do matury rozszerzonej."
-        },
-        {
-          "name": "Fizyka",
-          "level": "UNIVERSITY",
-          "description": "Pomagam studentom w przygotowaniach do kolokwium."
-        }
-      ],
-
-      "slots": [
-        {
-          "startTime": "2026-09-01T15:00:00Z",
-          "endTime": "2026-09-01T16:00:00Z",
-          "type": "ONLINE"
-        },
-        {
-          "startTime": "2026-09-02T15:00:00Z",
-          "endTime": "2026-09-02T16:00:00Z",
-          "type": "OPTIONAL"
-        }
-      ]
+    "email": "bob@korkomat.pl",
+    "password": "bob123",
+    "firstName": "Bob",
+    "lastName": "BigBalls",
+    "bio": "Nauczyciel matematyki i fizyki z kilkuletnim doswiadczeniem. Przygotowuje do matury oraz pomaga studentom w nauce przedmiotow scislych.",
+    "hourlyRate": 80.00,
+    "subjects": [
+      {
+        "name": "Matematyka",
+        "level": "MATURA_EXAM",
+        "description": "Przygotowanie do matury rozszerzonej."
+      },
+      {
+        "name": "Matematyka",
+        "level": "EIGHT_GRADE_EXAM",
+        "description": "Przygotowanie do egzaminu osmoklasisty."
+      },
+      {
+        "name": "Fizyka",
+        "level": "UNIVERSITY",
+        "description": "Pomoc studentom w przygotowaniach do kolokwiow i egzaminow."
+      },
+      {
+        "name": "Fizyka",
+        "level": "HIGH_SCHOOL",
+        "description": "Nauka fizyki na poziomie szkoly sredniej."
+      }
+    ],
+    "slots": [
+      {
+        "startTime": "2026-11-01T15:00:00Z",
+        "endTime": "2026-11-01T16:00:00Z",
+        "type": "ONLINE"
+      },
+      {
+        "startTime": "2026-11-02T15:00:00Z",
+        "endTime": "2026-11-02T16:00:00Z",
+        "type": "ONLINE"
+      },
+      {
+        "startTime": "2026-11-03T16:00:00Z",
+        "endTime": "2026-11-03T17:30:00Z",
+        "type": "ONLINE"
+      },
+      {
+        "startTime": "2026-11-04T17:00:00Z",
+        "endTime": "2026-11-04T18:00:00Z",
+        "type": "ONLINE"
+      },
+      {
+        "startTime": "2026-11-12T15:00:00Z",
+        "endTime": "2026-11-12T16:00:00Z",
+        "type": "OPTIONAL"
+      }
+    ]
+  },
+  {
+  "email": "alice@korkomat.pl",
+  "password": "alice123",
+  "firstName": "Alice",
+  "lastName": "Smith",
+  "bio": "Lektorka jezyka angielskiego. Pomagam w nauce gramatyki, konwersacjach oraz przygotowaniu do egzaminow.",
+  "hourlyRate": 100.00,
+  "subjects": [
+  {
+      "name": "Jezyk angielski",
+      "level": "PRIMARY_SCHOOL",
+      "description": "Podstawy jezyka angielskiego dla dzieci."
+    },
+    {
+      "name": "Jezyk angielski",
+      "level": "HIGH_SCHOOL",
+      "description": "Gramatyka, slownictwo i konwersacje."
+    },
+    {
+      "name": "Jezyk angielski",
+      "level": "MATURA_EXAM",
+      "description": "Przygotowanie do matury podstawowej i rozszerzonej."
     }
   ],
-
-  "lessons": [
+  "slots": [
     {
-      "studentEmail": "mark@korkomat.pl",
-      "tutorEmail": "bob@korkomat.pl",
-      "subjectName": "Matematyka",
-      "level": "MATURA_EXAM",
-
-      "startTime": "2026-09-01T15:00:00Z",
-      "endTime": "2026-09-01T16:00:00Z",
-
-      "status": "PENDING",
-      "place": "discord app"
+    "startTime": "2026-11-01T09:00:00Z",
+    "endTime": "2026-11-01T10:00:00Z",
+    "type": "ONLINE"
+    },
+    {
+      "startTime": "2026-11-01T10:00:00Z",
+      "endTime": "2026-11-01T11:00:00Z",
+      "type": "ONLINE"
+    },
+    {
+      "startTime": "2026-11-03T14:00:00Z",
+      "endTime": "2026-11-03T15:00:00Z",
+      "type": "ONLINE"
+    },
+    {
+      "startTime": "2026-11-05T16:00:00Z",
+      "endTime": "2026-11-05T17:00:00Z",
+      "type": "OPTIONAL"
     }
+  ]
+  },
+  {
+  "email": "kasia@korkomat.pl",
+  "password": "kasia123",
+  "firstName": "Katarzyna",
+  "lastName": "Zielinska",
+  "bio": "Doswiadczona korepetytorka jezyka polskiego. Przygotowuje uczniow do egzaminu osmoklasisty i matury.",
+  "hourlyRate": 75.00,
+  "subjects": [
+  {
+  "name": "Jezyk polski",
+  "level": "PRIMARY_SCHOOL",
+  "description": "Czytanie ze zrozumieniem, gramatyka i ortografia."
+  },
+  {
+  "name": "Jezyk polski",
+  "level": "EIGHT_GRADE_EXAM",
+  "description": "Kompleksowe przygotowanie do egzaminu osmoklasisty."
+  },
+  {
+  "name": "Jezyk polski",
+  "level": "MATURA_EXAM",
+  "description": "Przygotowanie do matury z jezyka polskiego."
+  }
+  ],
+  "slots": [
+  {
+  "startTime": "2026-11-02T08:00:00Z",
+  "endTime": "2026-11-02T09:00:00Z",
+  "type": "ONLINE"
+  },
+  {
+  "startTime": "2026-11-02T09:00:00Z",
+  "endTime": "2026-11-02T10:00:00Z",
+  "type": "ONLINE"
+  },
+  {
+  "startTime": "2026-11-04T15:00:00Z",
+  "endTime": "2026-11-04T16:00:00Z",
+  "type": "ONLINE"
+  }
+  ]
+  },
+  {
+  "email": "michal@korkomat.pl",
+  "password": "michal123",
+  "firstName": "Michal",
+  "lastName": "Lewandowski",
+  "bio": "Programista i korepetytor informatyki. Pomagam w nauce programowania, algorytmow i podstaw baz danych.",
+  "hourlyRate": 120.00,
+  "subjects": [
+  {
+  "name": "Informatyka",
+  "level": "HIGH_SCHOOL",
+  "description": "Algorytmy, struktury danych i przygotowanie do matury."
+  },
+  {
+  "name": "Informatyka",
+  "level": "MATURA_EXAM",
+  "description": "Przygotowanie do matury rozszerzonej z informatyki."
+  },
+  {
+  "name": "Informatyka",
+  "level": "UNIVERSITY",
+  "description": "Programowanie, Java, bazy danych i algorytmy."
+  },
+  {
+  "name": "Matematyka",
+  "level": "UNIVERSITY",
+  "description": "Matematyka dyskretna i analiza matematyczna."
+  }
+  ],
+  "slots": [
+  {
+  "startTime": "2026-11-01T12:00:00Z",
+  "endTime": "2026-11-01T13:30:00Z",
+  "type": "ONLINE"
+  },
+  {
+  "startTime": "2026-11-03T12:00:00Z",
+  "endTime": "2026-11-03T13:00:00Z",
+  "type": "ONLINE"
+  },
+  {
+  "startTime": "2026-11-05T14:00:00Z",
+  "endTime": "2026-11-05T15:30:00Z",
+  "type": "ONLINE"
+  },
+  {
+  "startTime": "2026-11-06T16:00:00Z",
+  "endTime": "2026-11-06T17:00:00Z",
+  "type": "OPTIONAL"
+  }
+  ]
+  },
+  {
+  "email": "ola@korkomat.pl",
+  "password": "ola123",
+  "firstName": "Aleksandra",
+  "lastName": "Dabrowska",
+  "bio": "Korepetytorka chemii i biologii. Pomagam zrozumiec trudne zagadnienia oraz przygotowuje do matury rozszerzonej.",
+  "hourlyRate": 90.00,
+  "subjects": [
+  {
+  "name": "Chemia",
+  "level": "HIGH_SCHOOL",
+  "description": "Reakcje chemiczne, stechiometria i zadania rachunkowe."
+  },
+  {
+  "name": "Chemia",
+  "level": "MATURA_EXAM",
+  "description": "Przygotowanie do matury rozszerzonej z chemii."
+  },
+  {
+  "name": "Biologia",
+  "level": "HIGH_SCHOOL",
+  "description": "Pomoc w nauce biologii na poziomie szkoly sredniej."
+  },
+  {
+  "name": "Biologia",
+  "level": "MATURA_EXAM",
+  "description": "Przygotowanie do matury rozszerzonej z biologii."
+  }
+  ],
+  "slots": [
+  {
+  "startTime": "2026-11-02T12:00:00Z",
+  "endTime": "2026-11-02T13:00:00Z",
+  "type": "ONLINE"
+  },
+  {
+  "startTime": "2026-11-03T13:00:00Z",
+  "endTime": "2026-11-03T14:30:00Z",
+  "type": "ONLINE"
+  },
+  {
+  "startTime": "2026-11-04T12:00:00Z",
+  "endTime": "2026-11-04T13:00:00Z",
+  "type": "ONLINE"
+  }
+  ]
+  },
+  {
+  "email": "tomek@korkomat.pl",
+  "password": "tomek123",
+  "firstName": "Tomasz",
+  "lastName": "Wojcik",
+  "bio": "Lektor jezyka niemieckiego. Prowadze zajecia dla poczatkujacych i osob przygotowujacych sie do egzaminow.",
+  "hourlyRate": 60.00,
+  "subjects": [
+  {
+  "name": "Jezyk niemiecki",
+  "level": "PRIMARY_SCHOOL",
+  "description": "Podstawy jezyka niemieckiego i nauka slowek."
+  },
+  {
+  "name": "Jezyk niemiecki",
+  "level": "HIGH_SCHOOL",
+  "description": "Gramatyka, slownictwo i rozumienie tekstu."
+  },
+  {
+  "name": "Jezyk niemiecki",
+  "level": "UNIVERSITY",
+  "description": "Rozwijanie kompetencji jezykowych na poziomie akademickim."
+  }
+  ],
+  "slots": [
+  {
+  "startTime": "2026-11-01T14:00:00Z",
+  "endTime": "2026-11-01T15:00:00Z",
+  "type": "ONLINE"
+  },
+  {
+  "startTime": "2026-11-02T14:00:00Z",
+  "endTime": "2026-11-02T15:00:00Z",
+  "type": "ONLINE"
+  },
+  {
+  "startTime": "2026-11-04T14:00:00Z",
+  "endTime": "2026-11-04T15:00:00Z",
+  "type": "OPTIONAL"
+  }
+  ]
+  }
+  ],
+  "lessons": [
+  {
+  "studentEmail": "mark@korkomat.pl",
+  "tutorEmail": "bob@korkomat.pl",
+  "subjectName": "Matematyka",
+  "level": "MATURA_EXAM",
+  "startTime": "2026-11-02T15:00:00Z",
+  "endTime": "2026-11-02T16:00:00Z",
+  "status": "PENDING",
+  "place": "Discord",
+  "note": "Prosze o przejrzenie zadan z funkcji i ciagow."
+  },
+  {
+  "studentEmail": "emma@korkomat.pl",
+  "tutorEmail": "bob@korkomat.pl",
+  "subjectName": "Matematyka",
+  "level": "MATURA_EXAM",
+  "startTime": "2026-11-01T15:00:00Z",
+  "endTime": "2026-11-01T16:00:00Z",
+  "status": "CONFIRMED",
+  "place": "ul. Lokatorska 15 m. 10",
+  "note": "Powtorzenie materialu przed probna matura."
+  },
+  {
+  "studentEmail": "jan@korkomat.pl",
+  "tutorEmail": "alice@korkomat.pl",
+  "subjectName": "Jezyk angielski",
+  "level": "MATURA_EXAM",
+  "startTime": "2026-11-01T09:00:00Z",
+  "endTime": "2026-11-01T10:00:00Z",
+  "status": "CONFIRMED",
+  "place": "Google Meet",
+  "note": "Przygotowanie do czesci ustnej matury."
+  },
+  {
+  "studentEmail": "anna@korkomat.pl",
+  "tutorEmail": "kasia@korkomat.pl",
+  "subjectName": "Jezyk polski",
+  "level": "EIGHT_GRADE_EXAM",
+  "startTime": "2026-11-02T08:00:00Z",
+  "endTime": "2026-11-02T09:00:00Z",
+  "status": "PENDING",
+  "place": "Microsoft Teams",
+  "note": "Analiza lektur obowiazkowych."
+  },
+  {
+  "studentEmail": "piotr@korkomat.pl",
+  "tutorEmail": "michal@korkomat.pl",
+  "subjectName": "Informatyka",
+  "level": "UNIVERSITY",
+  "startTime": "2026-11-01T12:00:00Z",
+  "endTime": "2026-11-01T13:30:00Z",
+  "status": "CONFIRMED",
+  "place": "Discord",
+  "note": "Konsultacje z Javy i programowania obiektowego."
+  },
+  {
+  "studentEmail": "zofia@korkomat.pl",
+  "tutorEmail": "ola@korkomat.pl",
+  "subjectName": "Chemia",
+  "level": "MATURA_EXAM",
+  "startTime": "2026-11-02T12:00:00Z",
+  "endTime": "2026-11-02T13:00:00Z",
+  "status": "PENDING",
+  "place": "Google Meet",
+  "note": "Stechiometria i obliczenia chemiczne."
+  },
+  {
+  "studentEmail": "mark@korkomat.pl",
+  "tutorEmail": "tomek@korkomat.pl",
+  "subjectName": "Jezyk niemiecki",
+  "level": "HIGH_SCHOOL",
+  "startTime": "2026-11-01T14:00:00Z",
+  "endTime": "2026-11-01T15:00:00Z",
+  "status": "REJECTED",
+  "place": "Google Meet",
+  "note": "Termin odrzucony przez korepetytora."
+  },
+  {
+  "studentEmail": "emma@korkomat.pl",
+  "tutorEmail": "michal@korkomat.pl",
+  "subjectName": "Informatyka",
+  "level": "HIGH_SCHOOL",
+  "startTime": "2026-11-03T12:00:00Z",
+  "endTime": "2026-11-03T13:00:00Z",
+  "status": "CANCELLED",
+  "place": "Discord",
+  "note": "Lekcja anulowana przez ucznia."
+  }
   ]
 }

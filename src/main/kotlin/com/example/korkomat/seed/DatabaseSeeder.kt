@@ -209,7 +209,8 @@ class DatabaseSeeder(
                 studentProfile = studentProfile,
                 tutorSubject = tutorSubject,
                 status = LessonStatus.PENDING,
-                place = seedLesson.place
+                place = seedLesson.place,
+                note = seedLesson.note,
             )
 
             when (seedLesson.status) {

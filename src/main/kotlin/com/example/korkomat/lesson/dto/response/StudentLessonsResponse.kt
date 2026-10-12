@@ -25,6 +25,7 @@ sealed interface LessonResponse {
     val place: String?
     val format: LessonType?
     val subjectName: String?
+    val level: SubjectLevel?
 }
 
 data class StudentLessonResponse(
@@ -35,6 +36,7 @@ data class StudentLessonResponse(
     override val place: String?,
     override val format: LessonType?,
     override val subjectName: String?,
+    override val level: SubjectLevel?,
     val tutorName: String?
 ): LessonResponse
 
@@ -46,6 +48,7 @@ data class TutorLessonResponse(
     override val place: String?,
     override val format: LessonType?,
     override val subjectName: String?,
-    val level: SubjectLevel?,
+    override val level: SubjectLevel?,
     val studentName: String,
+    val note: String?,
 ): LessonResponse

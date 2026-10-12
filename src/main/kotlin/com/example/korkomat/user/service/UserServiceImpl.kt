@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class UserServiceImpl(
-    private val studentProfileService: StudentProfileService,
+    private val studentProfileService: StudentProfileServiceImpl,
     private val tutorProfileService: TutorProfileServiceImpl,
     private val currentUserProvider: CurrentUserProvider,
     private val studentRepository: StudentRepository,

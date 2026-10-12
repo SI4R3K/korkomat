@@ -28,11 +28,6 @@ class LessonServiceImpl(
         return GetLessonsResponse(
             lessons = lessonRepository
                 .findAllByStatusAndStudentProfileId(filter.status, student.id)
-                .ifEmpty {
-                    throw NoLessonsException(
-                        "Student ${student.id} has no lessons with status ${filter.status}."
-                    )
-                }
                 .map {
                     it.toStudentLessonResponse()
                 }

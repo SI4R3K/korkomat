@@ -61,4 +61,5 @@ data class SeedLesson(
 
     val status: LessonStatus,
     val place: String? = null,
+    val note: String? = null,
 )

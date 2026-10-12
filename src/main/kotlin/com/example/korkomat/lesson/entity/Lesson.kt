@@ -42,6 +42,8 @@ data class Lesson(
     var tutorSubject: TutorSubject? = null,
 
     var place: String? = null,
+
+    var note: String? = null,
 ){
     fun confirm() {
         if (status != LessonStatus.PENDING) {
@@ -61,8 +63,6 @@ data class Lesson(
         }
         status = LessonStatus.REJECTED
     }
-
-
 
 //    @Column(name="start_time")
 //    var startTime: Instant = Instant.now()
