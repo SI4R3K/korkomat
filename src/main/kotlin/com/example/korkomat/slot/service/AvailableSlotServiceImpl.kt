@@ -2,6 +2,7 @@ package com.example.korkomat.slot.service
 
 import com.example.korkomat.auth.service.CurrentProfileService
 import com.example.korkomat.common.constant.Constant
+import com.example.korkomat.slot.TimeUtil
 import com.example.korkomat.slot.dto.request.AvailableSlotFilterRequest
 import com.example.korkomat.slot.dto.request.CreateAvailableSlotRequest
 import com.example.korkomat.slot.dto.request.UpdateAvailableSlotRequest
@@ -33,14 +34,17 @@ class AvailableSlotServiceImpl(
     override fun createAvailableSlot(request: CreateAvailableSlotRequest): CreateAvailableSlotResponse {
         val tutor = currentProfileService.getCurrentTutor()
 
-        isProposedTimeValid(request.startTime, request.endTime)
+        val startTimeInstant = TimeUtil.localDateTimeToInstant(request.startTime)
+        val endTimeInstant = TimeUtil.localDateTimeToInstant(request.endTime)
+
+        isProposedTimeValid(startTimeInstant, endTimeInstant)
 
         val hasConflict =
             availableSlotRepository
                 .existsByTutorProfileAndStartTimeLessThanAndEndTimeGreaterThan(
                     tutorProfile = tutor,
-                    endTime = request.endTime,
-                    startTime = request.startTime,
+                    endTime = endTimeInstant,
+                    startTime = startTimeInstant,
                 )
 
         if (hasConflict) {
@@ -53,8 +57,8 @@ class AvailableSlotServiceImpl(
             AvailableSlot(
                 tutorProfile = tutor,
                 type = request.type,
-                startTime = request.startTime,
-                endTime = request.endTime,
+                startTime = startTimeInstant,
+                endTime = endTimeInstant,
             )
         )
         return CreateAvailableSlotResponse(
@@ -67,11 +71,18 @@ class AvailableSlotServiceImpl(
         id: Long,
         request: UpdateAvailableSlotRequest
     ): UpdateAvailableSlotsResponse {
+
         val tutor = currentProfileService.getCurrentTutor()
         val existingSlot = findAvailableSlotForTutor(id, tutor)
 
-        val updatedStartTime = request.startTime ?: existingSlot.startTime
-        val updatedEndTime = request.endTime ?: existingSlot.endTime
+        val updatedStartTime = request.startTime
+            ?.let { TimeUtil.localDateTimeToInstant(it) }
+            ?: existingSlot.startTime
+
+        val updatedEndTime = request.endTime
+            ?.let { TimeUtil.localDateTimeToInstant(it) }
+            ?: existingSlot.endTime
+
         val updatedType = request.type ?: existingSlot.type
 
         isProposedTimeValid(updatedStartTime, updatedEndTime)
