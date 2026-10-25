@@ -8,7 +8,7 @@ import com.example.korkomat.auth.dto.response.LoginResponse
 import com.example.korkomat.auth.dto.response.LogoutResponse
 import com.example.korkomat.auth.dto.response.RegistrationResponse
 import com.example.korkomat.auth.dto.response.TokenRefreshResponse
-import com.example.korkomat.auth.email.service.EmailService
+import com.example.korkomat.notification.email.service.AuthEmailService
 import com.example.korkomat.auth.entity.enumeration.VerificationTokenType
 import com.example.korkomat.auth.exceptions.InactiveUserException
 import com.example.korkomat.auth.exceptions.RefreshTokenNotFoundExcpetion
@@ -34,7 +34,7 @@ class AuthenticationServiceImpl(
     private val refreshTokenService: RefreshTokenService,
     private val refreshTokenRepository: RefreshTokenRepository,
     private val verificationTokenService: VerificationTokenService,
-    private val emailService: EmailService,
+    private val emailService: AuthEmailService,
 ): AuthenticationService {
 
     @Transactional

@@ -1,6 +1,5 @@
-package com.example.korkomat.auth.email.service
+package com.example.korkomat.notification.email.service
 
-import jakarta.mail.internet.MimeMessage
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
@@ -8,7 +7,7 @@ import org.springframework.stereotype.Service
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 
 @Service
-class EmailService(
+class AuthEmailService(
     private val javaMailSender: JavaMailSender,
 
     @Value("spring.mail.username")
