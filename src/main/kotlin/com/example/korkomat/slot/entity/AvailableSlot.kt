@@ -27,11 +27,11 @@ data class AvailableSlot(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+    val id: Long,
 
     @ManyToOne
     @JoinColumn(name = "tutor_profile_id", nullable = false)
-    val tutorProfile: TutorProfile? = null,
+    val tutorProfile: TutorProfile,
 
     @Enumerated(EnumType.STRING)
     var slotStatus: SlotStatus = SlotStatus.AVAILABLE,

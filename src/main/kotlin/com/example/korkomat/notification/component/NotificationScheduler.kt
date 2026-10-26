@@ -7,7 +7,7 @@ class NotificationScheduler(
     private val notificationService: NotificationService,
 ) {
 
-    @Scheduled(fixedDelay = 10_000)
+    @Scheduled(fixedDelay = 5_000)
     fun processPendingNotifications() {
         notificationService.sendPendingNotifications()
     }

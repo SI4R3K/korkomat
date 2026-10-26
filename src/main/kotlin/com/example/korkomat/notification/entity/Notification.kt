@@ -44,7 +44,7 @@ data class Notification(
     var status: NotificationStatus = NotificationStatus.PENDING,
 
     @Column(nullable = false)
-    val scheduledAt: Instant,
+    val scheduledAt: Instant = Clock.System.now(),
 
     var sentAt: Instant? = null,
 
@@ -52,4 +52,17 @@ data class Notification(
     var errorMessage: String? = null,
 
     val createdAt: Instant = Clock.System.now()
-)
+) {
+    fun markAsSent() {
+        if (status != NotificationStatus.SENT) {
+            status = NotificationStatus.SENT
+        }
+    }
+
+    fun markAsFailed(msg: String?) {
+        if (status != NotificationStatus.FAILED) {
+            status = NotificationStatus.FAILED
+            errorMessage = msg
+        }
+    }
+}

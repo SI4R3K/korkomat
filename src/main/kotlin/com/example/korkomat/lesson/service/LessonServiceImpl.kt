@@ -11,6 +11,7 @@ import com.example.korkomat.lesson.exceptions.NoLessonsException
 import com.example.korkomat.lesson.mapper.toStudentLessonResponse
 import com.example.korkomat.lesson.mapper.toTutorLessonResponse
 import com.example.korkomat.lesson.repository.LessonRepository
+import com.example.korkomat.notification.service.NotificationService
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional
 class LessonServiceImpl(
     private val currentProfileService: CurrentProfileService,
     private val lessonRepository: LessonRepository,
+    private val notificationService: NotificationService,
 ) : LessonService {
 
     @Transactional(readOnly = true)
@@ -64,6 +66,8 @@ class LessonServiceImpl(
 
         lesson.confirm()
         lesson.slot.book(lesson)
+
+        notificationService.notifyLessonConfirmed(lesson)
 
         return lesson.toTutorLessonResponse()
     }

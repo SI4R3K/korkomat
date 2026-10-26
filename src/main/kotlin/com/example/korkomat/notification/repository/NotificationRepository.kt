@@ -12,4 +12,8 @@ interface NotificationRepository: JpaRepository<Notification, UUID> {
         status: NotificationStatus,
         scheduledAt: Instant
     ): List<Notification>
+
+    fun findAllByStatus(
+        status: NotificationStatus
+    ): List<Notification>
 }
