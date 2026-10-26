@@ -1,34 +1,69 @@
 package com.example.korkomat.notification.email.service
 
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.stereotype.Service
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder
+import org.thymeleaf.context.Context
+import org.thymeleaf.spring6.SpringTemplateEngine
+import org.springframework.web.util.UriComponentsBuilder
+import java.nio.charset.StandardCharsets
 
 @Service
 class AuthEmailService(
     private val javaMailSender: JavaMailSender,
+    private val templateEngine: SpringTemplateEngine,
 
-    @Value("spring.mail.username")
+    @Value("\${spring.mail.username}")
     private val from: String,
 
     @Value("\${app.frontEndUrl}")
-    private val frontendUrl: String
-
+    private val frontendUrl: String,
 ) {
+
+    private val logger = LoggerFactory.getLogger(
+        AuthEmailService::class.java
+    )
+
     fun sendVerificationEmail(email: String, token: String) {
-        val subject: String = "Email verification"
-        val path: String = "/auth/verify"
-        val message = "Click the button below to verify your email."
-        sendEmail(email, token, subject, path, message)
+        sendEmail(
+            email = email,
+            token = token,
+            subject = "Verify your email address",
+            path = "/auth/verify",
+            title = "Welcome to Korkomat!",
+            message = """
+                Thanks for joining Korkomat!
+                Verify your email address to activate your account
+                and start using the platform.
+            """.trimIndent(),
+            buttonText = "Verify email",
+            expirationMessage = "For security reasons, this verification link will expire.",
+            securityMessage = """
+                If you didn't create a Korkomat account, you can safely ignore this email.
+            """.trimIndent(),
+        )
     }
 
     fun sendForgotPasswordEmail(email: String, token: String) {
-        val subject: String = "Password Reset Request"
-        val path: String = "auth/reset-password"
-        val message = "Click the button below to reset your password."
-        sendEmail(email, token, subject, path, message)
+        sendEmail(
+            email = email,
+            token = token,
+            subject = "Reset your Korkomat password",
+            path = "/auth/reset-password",
+            title = "Reset your password",
+            message = """
+                We received a request to reset your Korkomat password.
+                Click the button below to choose a new password.
+            """.trimIndent(),
+            buttonText = "Reset password",
+            expirationMessage = "For your security, this password-reset link will expire.",
+            securityMessage = """
+                If you didn't request a password reset, you can safely ignore this email.
+                Your password won't change unless you complete the reset process.
+            """.trimIndent(),
+        )
     }
 
     private fun sendEmail(
@@ -36,44 +71,59 @@ class AuthEmailService(
         token: String,
         subject: String,
         path: String,
-        message: String
+        title: String,
+        message: String,
+        buttonText: String,
+        expirationMessage: String?,
+        securityMessage: String,
     ) {
         try {
-
-            val actionUrl = ServletUriComponentsBuilder
+            val actionUrl = UriComponentsBuilder
                 .fromUriString(frontendUrl)
                 .path(path)
                 .queryParam("token", token)
+                .build()
+                .encode()
                 .toUriString()
 
-            val content = """
-                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border-radius: 8px; background-color: #f9f9f9; text-align: center;">
-                        <h2 style="color: #333;">$subject</h2>
-                        <p style="font-size: 16px; color: #555;">$message</p>
-                        <a href="$actionUrl" style="display: inline-block; margin: 20px 0; padding: 10px 20px; font-size: 16px; color: #fff; background-color: #007bff; text-decoration: none; border-radius: 5px;">
-                            Proceed
-                        </a>
-                        <p style="font-size: 14px; color: #777;">
-                            Or copy and paste this link into your browser:
-                        </p>
-                        <p style="font-size: 14px; color: #007bff;">$actionUrl</p>
-                        <p style="font-size: 12px; color: #aaa;">
-                            This is an automated message. Please do not reply.
-                        </p>
-                    </div>
-            """.trimIndent()
+            val context = Context().apply {
+                setVariable("title", title)
+                setVariable("message", message)
+                setVariable("buttonText", buttonText)
+                setVariable("actionUrl", actionUrl)
+                setVariable("expirationMessage", expirationMessage)
+                setVariable("securityMessage", securityMessage)
+            }
+
+            val htmlContent = templateEngine.process(
+                "email/auth-email",
+                context,
+            )
 
             val mimeMessage = javaMailSender.createMimeMessage()
-            val helper = MimeMessageHelper(mimeMessage, true)
+
+            val helper = MimeMessageHelper(
+                mimeMessage,
+                false,
+                StandardCharsets.UTF_8.name(),
+            )
 
             helper.setTo(email)
             helper.setSubject(subject)
             helper.setFrom(from)
-            helper.setText(content, true)
+            helper.setText(htmlContent, true)
+
             javaMailSender.send(mimeMessage)
 
         } catch (e: Exception) {
-            System.err.println("Failed to send email: "+e.message)
+            logger.error(
+                "Failed to send authentication email to {}: {}",
+                email,
+                e.message,
+                e,
+            )
+
+            throw e
         }
     }
 }

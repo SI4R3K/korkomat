@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light">
+    <meta name="supported-color-schemes" content="light">
+    <title th:text="${title}">Korkomat Notification</title>
+</head>
+
+<body style="margin:0;padding:0;background-color:#f3f4f6;
+             font-family:Arial,Helvetica,sans-serif;color:#1f2937;">
+
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0"
+       border="0" style="background-color:#f3f4f6;padding:32px 12px;">
+    <tr>
+        <td align="center">
+
+            <table role="presentation" width="100%" cellspacing="0"
+                   cellpadding="0" border="0"
+                   style="max-width:600px;background-color:#ffffff;
+                          border-radius:16px;overflow:hidden;">
+
+                <!-- Header -->
+                <tr>
+                    <td style="background-color:#1e293b;padding:28px 32px;
+                               text-align:center;">
+                        <div style="font-size:28px;font-weight:bold;
+                                    letter-spacing:1px;color:#ffffff;">
+                            KORKOMAT
+                        </div>
+
+                        <div style="font-size:13px;color:#cbd5e1;margin-top:6px;">
+                            Your learning, organised.
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Main content -->
+                <tr>
+                    <td style="padding:36px 32px 24px;">
+
+                        <h1 style="margin:0 0 16px;font-size:25px;
+                                   line-height:1.3;color:#111827;"
+                            th:text="${title}">
+                            Lesson confirmed!
+                        </h1>
+
+                        <p style="margin:0 0 24px;font-size:15px;
+                                  line-height:1.7;color:#4b5563;"
+                           th:text="${message}">
+                            Your lesson has been confirmed.
+                        </p>
+
+                        <!-- Status badge -->
+                        <div style="margin-bottom:20px;">
+                            <span style="display:inline-block;padding:7px 12px;
+                                         border-radius:20px;font-size:11px;
+                                         font-weight:bold;letter-spacing:0.7px;"
+                                  th:style="'display:inline-block;padding:7px 12px;border-radius:20px;font-size:11px;font-weight:bold;letter-spacing:0.7px;background-color:' + ${accentLight} + ';color:' + ${accentColor}"
+                                  th:text="${statusLabel}">
+                                CONFIRMED
+                            </span>
+                        </div>
+
+                        <!-- Lesson details -->
+                        <table role="presentation" width="100%"
+                               cellspacing="0" cellpadding="0" border="0"
+                               style="background-color:#f9fafb;
+                                      border:1px solid #e5e7eb;
+                                      border-radius:12px;">
+
+                            <tr>
+                                <td style="padding:20px 22px;">
+
+                                    <div style="font-size:12px;
+                                                text-transform:uppercase;
+                                                letter-spacing:1px;
+                                                color:#6b7280;margin-bottom:6px;">
+                                        Lesson details
+                                    </div>
+
+                                    <div style="font-size:19px;font-weight:bold;
+                                                color:#111827;margin-bottom:18px;"
+                                         th:text="${lessonSubject}">
+                                        Mathematics
+                                    </div>
+
+                                    <div style="font-size:13px;color:#6b7280;
+                                                margin-bottom:5px;">
+                                        Date and time
+                                    </div>
+
+                                    <div style="font-size:15px;color:#1f2937;
+                                                margin-bottom:18px;"
+                                         th:text="${lessonDate}">
+                                        15 November 2026, 18:00
+                                    </div>
+
+                                    <div style="font-size:13px;color:#6b7280;
+                                                margin-bottom:5px;"
+                                         th:text="${personLabel}">
+                                        Tutor
+                                    </div>
+
+                                    <div style="font-size:15px;color:#1f2937;"
+                                         th:text="${personName}">
+                                        John Smith
+                                    </div>
+
+                                </td>
+                            </tr>
+                        </table>
+
+                        <p style="margin:24px 0 0;font-size:14px;
+                                  line-height:1.7;color:#6b7280;">
+                            Visit Korkomat to check your lesson details
+                            and manage your schedule.
+                        </p>
+
+                    </td>
+                </tr>
+
+                <!-- Footer -->
+                <tr>
+                    <td style="padding:20px 32px;background-color:#f9fafb;
+                               border-top:1px solid #e5e7eb;text-align:center;">
+
+                        <p style="margin:0 0 8px;font-size:13px;color:#6b7280;">
+                            Sent by Korkomat
+                        </p>
+
+                        <p style="margin:0;font-size:12px;line-height:1.6;
+                                  color:#9ca3af;">
+                            This is an automated notification.
+                            Please do not reply directly to this email.
+                        </p>
+
+                    </td>
+                </tr>
+
+            </table>
+
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>
