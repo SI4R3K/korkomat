@@ -56,6 +56,7 @@ data class Notification(
     fun markAsSent() {
         if (status != NotificationStatus.SENT) {
             status = NotificationStatus.SENT
+            sentAt = Clock.System.now()
         }
     }
 

@@ -55,10 +55,10 @@ class LessonServiceImpl(
 
         val lesson = lessonRepository.findByIdOrNull(lessonId)
             ?: throw NoLessonsException(
-                "Lesson with id ${lessonId} does not exist."
+                "Lesson with id $lessonId does not exist."
             )
 
-        if (lesson.slot.tutorProfile?.id != tutor.id) {
+        if (lesson.slot.tutorProfile.id != tutor.id) {
             throw ForbiddenAccessException(
                 "Tutor with ${tutor.id} does not own a selected lesson."
             )
@@ -67,7 +67,7 @@ class LessonServiceImpl(
         lesson.confirm()
         lesson.slot.book(lesson)
 
-        notificationService.notifyLessonConfirmed(lesson)
+        notificationService.notifyStudentLessonConfirmed(lesson)
 
         return lesson.toTutorLessonResponse()
     }
@@ -81,7 +81,7 @@ class LessonServiceImpl(
                 "Lesson with id ${lessonId} does not exist."
             )
 
-        if (lesson.slot.tutorProfile?.id != tutor.id) {
+        if (lesson.slot.tutorProfile.id != tutor.id) {
             throw ForbiddenAccessException(
                 "Tutor with ${tutor.id} does not own a selected lesson."
             )
@@ -89,6 +89,8 @@ class LessonServiceImpl(
 
         lesson.reject()
         lesson.slot.release()
+
+        notificationService.notifyStudentLessonRejected(lesson)
 
         return lesson.toTutorLessonResponse()
     }

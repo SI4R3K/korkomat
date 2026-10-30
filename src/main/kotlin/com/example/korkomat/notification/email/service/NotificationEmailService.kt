@@ -109,9 +109,35 @@ class NotificationEmailService(
             lessonDate = lessonDate,
             personLabel = "Contact",
             personName = personName,
-            accentColor = "#d97706",
-            accentLight = "#fffbeb",
+            accentColor = "#f7b91b",
+            accentLight = "#d8ed6d",
             statusLabel = "CANCELLED",
+        )
+    }
+
+    fun sendLessonBooked(
+        email: String,
+        lessonSubject: String,
+        lessonDate: String,
+        studentName: String,
+    ) {
+        sendEmail(
+            email = email,
+            subject = "New lesson reservation",
+            title = "New lesson reservation!",
+            message = """
+            A student has booked one of your available slots!
+            
+            Please review the reservation in your tutor panel
+            and accept or reject the lesson request.
+        """.trimIndent(),
+            lessonSubject = lessonSubject,
+            lessonDate = lessonDate,
+            personLabel = "Student",
+            personName = studentName,
+            accentColor = "#6f72c7",
+            accentLight = "#c7e9fe",
+            statusLabel = "AWAITING CONFIRMATION"
         )
     }
 

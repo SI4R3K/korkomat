@@ -4,7 +4,9 @@ import com.example.korkomat.lesson.entity.Lesson
 
 interface NotificationService {
 
-    fun notifyLessonConfirmed(lesson: Lesson)
+    fun notifyStudentLessonConfirmed(lesson: Lesson)
+    fun notifyTutorLessonBooked(lesson: Lesson)
+    fun notifyStudentLessonRejected(lesson: Lesson)
 
     fun sendPendingNotifications()
 }

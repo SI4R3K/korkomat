@@ -27,7 +27,7 @@ data class AvailableSlot(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long,
+    val id: Long? = null,
 
     @ManyToOne
     @JoinColumn(name = "tutor_profile_id", nullable = false)

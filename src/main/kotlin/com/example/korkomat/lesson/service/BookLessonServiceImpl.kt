@@ -16,6 +16,7 @@ import com.example.korkomat.slot.exceptions.InvalidSlotTimeException
 import com.example.korkomat.subject.excpeptions.TutorSubjectDoesNotExistException
 import com.example.korkomat.slot.repository.AvailableSlotRepository
 import com.example.korkomat.lesson.repository.LessonRepository
+import com.example.korkomat.notification.service.NotificationService
 import com.example.korkomat.subject.repository.TutorSubjectRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -28,6 +29,7 @@ class BookLessonServiceImpl(
     private val currentProfileService: CurrentProfileService,
     private val lessonRepository: LessonRepository,
     private val tutorSubjectRepository: TutorSubjectRepository,
+    private val notificationService: NotificationService,
 ) : BookLessonService {
 
     @Transactional
@@ -86,13 +88,15 @@ class BookLessonServiceImpl(
         lessonRepository.save(lesson)
         slotToBeReserved.reserve(lesson)
 
+        notificationService.notifyTutorLessonBooked(lesson)
+
         return BookLessonResponse(
             message = "Slot reserved. Awaiting tutor confirmation.",
             subjectName = tutorSubject.subject.name,
             level = tutorSubject.level,
             startTime = slotToBeReserved.startTime,
             endTime = slotToBeReserved.endTime,
-            tutorName = slotToBeReserved.tutorProfile?.user?.username,
+            tutorName = slotToBeReserved.tutorProfile.user.username,
             lessonStatus = lesson.status,
         )
     }
@@ -122,7 +126,7 @@ class BookLessonServiceImpl(
             lessonId = lessonToBeCancelled.id,
             startedAt = lessonToBeCancelled.slot.startTime,
             finishedAt = lessonToBeCancelled.slot.endTime,
-            tutorName = lessonToBeCancelled.slot.tutorProfile?.user?.getFullName(),
+            tutorName = lessonToBeCancelled.slot.tutorProfile.user.getFullName(),
         )
 
         lessonToBeCancelled.slot.release()
