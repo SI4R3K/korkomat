@@ -11,6 +11,8 @@ import java.util.UUID
 
 interface LessonRepository: JpaRepository<Lesson, Long> {
 
+    fun findFirstBySlotIdOrderByCreatedAtDescIdDesc(slotId: Long?): Lesson?
+
     fun findAllByStatusAndStudentProfileId(
         @Param("status") status: LessonStatus,
         @Param("studentProfileId") studentProfileId: UUID?

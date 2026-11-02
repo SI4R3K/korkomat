@@ -12,12 +12,15 @@ import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
+import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
+import jakarta.persistence.OneToMany
 import jakarta.persistence.OneToOne
+import jakarta.persistence.OrderBy
 import jakarta.persistence.Table
 import java.time.Instant
 
@@ -47,15 +50,17 @@ data class AvailableSlot(
     @Column(name="is_available")
     var isAvailable: Boolean = true,
 
-    @OneToOne(mappedBy = "slot", cascade = [CascadeType.ALL], orphanRemoval = true)
-    var lesson: Lesson? = null,
+    @OneToMany(mappedBy = "slot", fetch = FetchType.LAZY)
+    @OrderBy("createdAt DESC, id DESC")
+    var lessons: MutableList<Lesson> = mutableListOf(),
     ) {
 
     fun reserve(lessonToReserve: Lesson) {
         if (slotStatus == SlotStatus.AVAILABLE) {
             slotStatus = SlotStatus.RESERVED
-            lesson = lessonToReserve
             isAvailable = false
+
+            lessons.add(lessonToReserve)
         } else {
             throw SlotUnavailableException(
                 String.format(
@@ -68,7 +73,6 @@ data class AvailableSlot(
     fun book(lessonToBook: Lesson) {
         if (slotStatus == SlotStatus.RESERVED) {
             slotStatus = SlotStatus.BOOKED
-            lesson = lessonToBook
         } else {
             throw SlotUnavailableException(
                 String.format(
@@ -81,7 +85,6 @@ data class AvailableSlot(
     fun release() {
         if (slotStatus != SlotStatus.AVAILABLE) {
             slotStatus = SlotStatus.AVAILABLE
-            lesson = null
             isAvailable = true
         } else {
             throw SlotUnavailableException(

@@ -9,6 +9,7 @@ import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
+import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
@@ -17,6 +18,8 @@ import jakarta.persistence.ManyToOne
 import jakarta.persistence.MapsId
 import jakarta.persistence.OneToOne
 import jakarta.persistence.Table
+import java.time.Instant
+import kotlin.time.Clock
 
 @Entity
 @Table(name = "lessons")
@@ -29,8 +32,8 @@ data class Lesson(
     @Column(name = "lesson_status")
     var status: LessonStatus = LessonStatus.PENDING,
 
-    @OneToOne
-    @JoinColumn(name = "available_slot_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "available_slot_id", nullable = false)
     var slot: AvailableSlot,
 
     @ManyToOne
@@ -44,6 +47,8 @@ data class Lesson(
     var place: String? = null,
 
     var note: String? = null,
+
+    val createdAt: kotlin.time.Instant = Clock.System.now()
 ){
     fun confirm() {
         if (status != LessonStatus.PENDING) {

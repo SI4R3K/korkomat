@@ -2,6 +2,7 @@ package com.example.korkomat.slot.service
 
 import com.example.korkomat.auth.service.CurrentProfileService
 import com.example.korkomat.common.constant.Constant
+import com.example.korkomat.lesson.service.LessonService
 import com.example.korkomat.slot.TimeUtil
 import com.example.korkomat.slot.dto.request.AvailableSlotFilterRequest
 import com.example.korkomat.slot.dto.request.CreateAvailableSlotRequest
@@ -27,7 +28,8 @@ import java.time.Instant
 @Service
 class AvailableSlotServiceImpl(
     private val availableSlotRepository: AvailableSlotRepository,
-    private val currentProfileService: CurrentProfileService
+    private val currentProfileService: CurrentProfileService,
+    private val lessonService: LessonService,
 ) : AvailableSlotService {
 
     @Transactional
@@ -175,6 +177,9 @@ class AvailableSlotServiceImpl(
     }
 
     private fun AvailableSlot.toAvailableSlotResponse(): AvailableSlotResponse {
+
+        val lesson = lessonService.getLatestLesson(id)
+
         return AvailableSlotResponse(
             slotId = id,
             startTime = startTime,

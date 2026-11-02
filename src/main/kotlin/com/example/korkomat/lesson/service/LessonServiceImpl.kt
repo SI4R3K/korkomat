@@ -5,8 +5,7 @@ import com.example.korkomat.auth.service.CurrentProfileService
 import com.example.korkomat.lesson.dto.request.LessonFilterRequest
 import com.example.korkomat.lesson.dto.response.GetLessonsResponse
 import com.example.korkomat.lesson.dto.response.LessonResponse
-import com.example.korkomat.lesson.entity.enumeration.LessonStatus
-import com.example.korkomat.lesson.exceptions.InvalidLessonStatusException
+import com.example.korkomat.lesson.entity.Lesson
 import com.example.korkomat.lesson.exceptions.NoLessonsException
 import com.example.korkomat.lesson.mapper.toStudentLessonResponse
 import com.example.korkomat.lesson.mapper.toTutorLessonResponse
@@ -93,5 +92,10 @@ class LessonServiceImpl(
         notificationService.notifyStudentLessonRejected(lesson)
 
         return lesson.toTutorLessonResponse()
+    }
+
+    override fun getLatestLesson(slotId: Long?): Lesson? {
+        return lessonRepository
+            .findFirstBySlotIdOrderByCreatedAtDescIdDesc(slotId)
     }
 }

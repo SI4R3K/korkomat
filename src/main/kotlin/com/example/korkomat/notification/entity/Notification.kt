@@ -33,7 +33,7 @@ data class Notification(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lesson_id")
-    val lesson: Lesson? = null,
+    var lesson: Lesson? = null,
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

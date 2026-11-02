@@ -84,9 +84,9 @@ class BookLessonServiceImpl(
             place = request.place,
             note = request.note,
             )
+        slotToBeReserved.reserve(lesson)
 
         lessonRepository.save(lesson)
-        slotToBeReserved.reserve(lesson)
 
         notificationService.notifyTutorLessonBooked(lesson)
 

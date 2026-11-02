@@ -88,6 +88,7 @@ class NotificationServiceImpl(
                     "from ${formatter.format(notification.lesson?.slot?.startTime)} " +
                     "to ${formatter.format(notification.lesson?.slot?.endTime)}"
                 val tutorName = notification.lesson?.slot?.tutorProfile?.user?.getFullName() ?: ""
+                val studentName = notification.lesson?.studentProfile?.user?.getFullName() ?: ""
 
                 when (notification.type) {
 
@@ -99,12 +100,21 @@ class NotificationServiceImpl(
                             tutorName = tutorName,
                         )
 
-                    NotificationType.LESSON_REJECTED ->
+                    NotificationType.LESSON_REJECTED -> {
                         emailService.sendLessonRejected(
                             email = email,
                             lessonSubject = lessonSubject,
                             lessonDate = lessonDate,
                             tutorName = tutorName,
+                        )
+                    }
+
+                    NotificationType.LESSON_BOOKED ->
+                        emailService.sendLessonBooked(
+                            email = email,
+                            lessonSubject = lessonSubject,
+                            lessonDate = lessonDate,
+                            studentName = studentName,
                         )
 
                     else -> {

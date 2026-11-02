@@ -33,6 +33,12 @@
       "lastName": "BigToe"
     },
     {
+      "email": "antosiok@gmail.com",
+      "password": "antek123",
+      "firstName": "Giga",
+      "lastName": "Sigma"
+    },
+    {
       "email": "emma@korkomat.pl",
       "password": "emma123",
       "firstName": "Emma",
@@ -65,7 +71,7 @@
   ],
   "tutors": [
     {
-    "email": "bob@korkomat.pl",
+    "email": "jarczewski.antoni@gmail.com",
     "password": "bob123",
     "firstName": "Bob",
     "lastName": "BigBalls",
@@ -355,7 +361,7 @@
   "lessons": [
   {
   "studentEmail": "mark@korkomat.pl",
-  "tutorEmail": "bob@korkomat.pl",
+  "tutorEmail": "jarczewski.antoni@gmail.com",
   "subjectName": "Matematyka",
   "level": "MATURA_EXAM",
   "startTime": "2026-11-02T15:00:00Z",
@@ -366,7 +372,7 @@
   },
   {
   "studentEmail": "emma@korkomat.pl",
-  "tutorEmail": "bob@korkomat.pl",
+  "tutorEmail": "jarczewski.antoni@gmail.com",
   "subjectName": "Matematyka",
   "level": "MATURA_EXAM",
   "startTime": "2026-11-01T15:00:00Z",
