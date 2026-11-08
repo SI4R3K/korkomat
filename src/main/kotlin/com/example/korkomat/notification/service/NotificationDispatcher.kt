@@ -9,17 +9,6 @@ class NotificationDispatcher(
     handlers: List<NotificationHandler>
 ) {
 
-//    init {
-//        println("=== REGISTERED NOTIFICATION HANDLERS ===")
-//
-//        handlers.forEach {
-//            println("Handler: ${it::class.simpleName}, type: ${it.type}")
-//        }
-//
-//        println("========================================")
-//    }
-
-
     private val handlersByType = handlers.associateBy {
         it.type
     }
